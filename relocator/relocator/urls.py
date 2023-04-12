@@ -14,6 +14,8 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from relocator import settings
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 from main.views import *
@@ -31,3 +33,6 @@ urlpatterns = [
     #Возможно нужно изменить отображение по id (тип int) -- урок 3 5:00
     path('hr/employeeProfile/<int:appid>/', hrApplication),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.NEDIA_URL, document_root=settings.MEDIA_ROOT)
