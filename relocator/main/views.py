@@ -1,23 +1,49 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
-def home(request):
-    return HttpResponse("Главная страница общая") 
+from .models import *
+from .forms import *
+#def home(request):
+#    return HttpResponse("Главная страница общая") 
 
-def user(request):
-    return HttpResponse("Главная страница сотрудника") 
+
+
+def home(request):
+    return render(request, 'main/user/base.html') 
+
+def userApplication(request):
+    return render(request, 'main/user/application.html') 
 
 def userProfile(request):
-    return HttpResponse("Профиль сотрудника") 
+    if request.method == 'POST':
+        form = AddProfileForm(request.POST)
+        if form.is_valid():
+            print(form.cleaned_data)
+            try:
+                Personal_Info.objects.create(**form.cleaned_data)
+                return redirect('home')
+            except Exception as e:
+                form.add_error(None, f'Ошибка: {e}')
+
+    else:
+        form = AddProfileForm()
+
+    return render(request, 'main/user/profile.html', {'form': form}) 
 
 def userRelocatedEmployees(request):
-    return HttpResponse("Релоцированные струдники") 
+    user = User.objects.all()
+    return render(request, 'main/user/relocatedEmployees.html', {'user': user})  
 
 
 def hr(request):
-    return HttpResponse("Главная страница hr") 
+    return render(request, 'main/hr/base.html') 
 
-def hrApplication(request, appid):
-    return HttpResponse(f"Заявка на релокацию номер {appid}") 
+def hrApplications(request):
+    return render(request, 'main/hr/applications.html') 
+
+def hrEmployeeProfile(request, appid):
+    return render(request, 'main/hr/employeeProfile.html', {appid}) 
+    #return HttpResponse(f"Заявка на релокацию номер {appid}") 
+
 
 

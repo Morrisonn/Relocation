@@ -24,14 +24,17 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('', home),
+    #  path('/autorisation/', autorisation),
 
-    path('user/home/', user),
-    path('user/profile/', userProfile),
-    path('user/relocatedEmployees/', userRelocatedEmployees),
+    
+    path('user/application/', userApplication, name = 'userApplication'),
+    path('user/profile/', userProfile, name = 'userProfile'),
+    path('user/relocatedEmployees/', userRelocatedEmployees, name = 'userRelocatedEmployees'),
 
     path('hr/', hr),
+    path('hr/applications/', hrApplications, name = 'hrApplications'),
     #Возможно нужно изменить отображение по id (тип int) -- урок 3 5:00
-    path('hr/employeeProfile/<int:appid>/', hrApplication),
+    path('hr/employeeProfile/<int:appid>/', hrEmployeeProfile),
 ]
 
 if settings.DEBUG:

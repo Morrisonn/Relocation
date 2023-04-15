@@ -1,0 +1,20 @@
+{% extends 'main/user/base.html' %}
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% block profile %}
+<div class="template-div">
+    <form action="{% url 'userProfile' %}" method="post">
+        {% csrf_token %}
+
+        <div class="form-error">{{ form.non_field_errors }}</div>
+
+    {% for f in form %}
+    <p><label class="form-label" for="{{ f.id_for_label }}">{{f.label}}: </label>{{ f }}</p>
+    <div class="form-error">{{ f.errors }}</div>
+    {% endfor %}
+
+        <button type="submit" class="btn btn-primary">Добавить</button>
+    </form>   
+</div>    
+{% endblock %}

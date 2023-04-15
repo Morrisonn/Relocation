@@ -1,12 +1,19 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
-class User(models.Model):
+class User(AbstractUser):
     login = models.CharField(max_length=50, unique=True)
     password = models.CharField(max_length=128)
     role = models.IntegerField()
     
     def __str__(self):
         return self.login
+    
+    class Meta:
+        verbose_name='Пользователи'
+        verbose_name_plural='Пользователи'
+        ordering = ['-role', 'login']
+
 
 
 class News(models.Model):
@@ -32,22 +39,26 @@ class Personal_Info(models.Model):
         return f'{self.last_name} {self.first_name} {self.middle_name} - {self.position}'
 
 
-class Application(models.Model):
-    status = models.CharField(max_length=20)
-    user = models.ForeignKey('User', on_delete=models.CASCADE)
-
-    def __str__(self):
-            return self.status
-
-
 class Location(models.Model):
-    country = models.CharField(max_length=100)
-    city = models.CharField(max_length=100)
-    description = models.TextField()
-    application = models.ForeignKey('Application', on_delete=models.CASCADE)
+    country = models.CharField(max_length=100, verbose_name="Страна")
+    city = models.CharField(max_length=100, verbose_name="Город")
+    description = models.TextField(verbose_name="Описание")
 
     def __str__(self):
             return self.country
+    
+    class Meta:
+        verbose_name='Локации'
+        verbose_name_plural='Локации'
+
+
+class Application(models.Model):
+    status = models.CharField(max_length=20)
+    user = models.ForeignKey('User', on_delete=models.CASCADE)
+    location = models.ForeignKey('Location', on_delete=models.CASCADE, null=True)
+
+    def __str__(self):
+            return self.status
 
 
 class Documents(models.Model):
