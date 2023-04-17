@@ -17,21 +17,21 @@ Including another URLconf
 from relocator import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from main.views import *
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls, name='admin'),
 
-    path('', home),
+    path('', begin, name = 'begin'),
     #  path('/autorisation/', autorisation),
 
-    
+    path('autorization/', include('main.urls')),
     path('user/application/', userApplication, name = 'userApplication'),
     path('user/profile/', userProfile, name = 'userProfile'),
     path('user/relocatedEmployees/', userRelocatedEmployees, name = 'userRelocatedEmployees'),
 
-    path('hr/', hr),
+    path('hr/', hr, name='hr'),
     path('hr/applications/', hrApplications, name = 'hrApplications'),
     #Возможно нужно изменить отображение по id (тип int) -- урок 3 5:00
     path('hr/employeeProfile/<int:appid>/', hrEmployeeProfile),

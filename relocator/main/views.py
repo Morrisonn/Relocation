@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 
 from .models import *
@@ -6,10 +6,11 @@ from .forms import *
 #def home(request):
 #    return HttpResponse("Главная страница общая") 
 
+def begin(request):
+    return render(request, 'main/index.html') 
 
-
-def home(request):
-    return render(request, 'main/user/base.html') 
+def autorisation(request):
+    return render(request, 'main/autorization.html') 
 
 def userApplication(request):
     return render(request, 'main/user/application.html') 
@@ -19,9 +20,11 @@ def userProfile(request):
         form = AddProfileForm(request.POST)
         if form.is_valid():
             print(form.cleaned_data)
+            form.cleaned_data['user'] = get_object_or_404(User, id=form.cleaned_data['user'])
+            print(form.cleaned_data)
             try:
                 Personal_Info.objects.create(**form.cleaned_data)
-                return redirect('home')
+                return redirect('begin')
             except Exception as e:
                 form.add_error(None, f'Ошибка: {e}')
 

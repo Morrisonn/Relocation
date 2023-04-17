@@ -4,10 +4,10 @@ from .models import *
 admin.site.site_header = "АДМИНИСТРАТОР"
 
 class LocationUser(admin.ModelAdmin):
-    list_display = ('id', 'login','password', 'role')
-    list_display_links = ('id', 'login','password', 'role')
-    search_fields = ('id', 'login','password', 'role')
-    list_filter = ('login', 'role')
+    list_display = ('id', 'username','password', 'role')
+    list_display_links = ('id', 'username','password', 'role')
+    search_fields = ('id', 'username','password', 'role')
+    list_filter = ('username', 'role')
 
 class LocationAdmin(admin.ModelAdmin):
     list_display = ('id', 'country','city', 'description')

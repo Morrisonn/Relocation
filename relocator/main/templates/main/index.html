@@ -1,0 +1,21 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Авторизация</title>
+	<link type="text/css" href="{% static 'main/css/styles.css' %}" rel="stylesheet" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<link rel="shortcut icon" href="{% static 'main/images/main.ico' %}" type="image/x-icon"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+	{% block choise %}
+		<div>
+			<a href=" {% url 'userProfile' %} " class="btn btn-block btn-primary text-light"> Я сотрудник</a>
+			<a href=" {% url 'hr' %} " class="btn btn-block btn-primary text-light"> Я HR</a>
+			<a href="/admin/" class="btn btn-block btn-primary text-light"> Я admin</a>
+		</div>
+	{% endblock choise %}
+</body>
+</html>

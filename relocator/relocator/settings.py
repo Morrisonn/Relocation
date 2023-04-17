@@ -28,6 +28,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+AUTH_USER_MODEL = 'main.User'
+LOGIN_REDIRECT_URL = '/'
 
 # Application definition
 

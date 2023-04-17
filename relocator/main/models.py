@@ -2,17 +2,15 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 class User(AbstractUser):
-    login = models.CharField(max_length=50, unique=True)
-    password = models.CharField(max_length=128)
-    role = models.IntegerField()
-    
+    role = models.CharField(max_length=50, blank=True)
+
     def __str__(self):
-        return self.login
+        return self.role
     
     class Meta:
         verbose_name='Пользователи'
         verbose_name_plural='Пользователи'
-        ordering = ['-role', 'login']
+        ordering = ['-role', 'username']
 
 
 
