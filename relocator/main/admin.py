@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import *
+from django.contrib.admin import AdminSite
 
 admin.site.site_header = "АДМИНИСТРАТОР"
 
@@ -17,4 +18,7 @@ class LocationAdmin(admin.ModelAdmin):
 
 admin.site.register(User, LocationUser)
 admin.site.register(Location, LocationAdmin)
+
+class MyAdminSite(AdminSite):
+    logout_url = '/autorization/login/'
 

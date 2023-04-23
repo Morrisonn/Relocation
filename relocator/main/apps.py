@@ -6,3 +6,9 @@ class MainConfig(AppConfig):
     name = 'main'
     verbose_name = 'Relocator'
 
+class MainConfig(AppConfig):
+    name = 'main'
+
+    def ready(self):
+        import main.signals
+

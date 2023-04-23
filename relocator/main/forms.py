@@ -9,4 +9,4 @@ class AddProfileForm(forms.Form):
     position = forms.CharField(max_length=50 , label = "Должность")
     email = forms.EmailField(label = "email")
     phone_number = forms.CharField(max_length=20, label = "Номер телефона")
-    user = forms.ModelChoiceField(queryset=User.objects.all().values_list('id', flat=True), label = "Пользователь", empty_label="Категория не выбрана")
+    
