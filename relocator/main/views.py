@@ -7,12 +7,15 @@ from .forms import *
 #    return HttpResponse("Главная страница общая") 
 
 def logout_view(request):
-    # выполнить какое-то действие для аутентифицированного пользователя
     logout(request)
     return redirect('login')
 
 def user(request):
-    return render(request, 'main/user/base.html', ) 
+    context = Personal_Info.objects.filter(user_id = request.user.id)
+    context_len = int(len(Personal_Info.objects.filter(user_id = request.user.id)))
+    print("=>", context_len)
+    print("=>", context)
+    return render(request, 'main/user/base.html', {'context': context, 'context_len':context_len}) 
 
 def begin(request):
     if not request.user.is_authenticated:
