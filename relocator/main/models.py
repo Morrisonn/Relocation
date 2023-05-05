@@ -31,10 +31,10 @@ class Personal_Info(models.Model):
     position = models.CharField(max_length=50)
     email = models.EmailField()
     phone_number = models.CharField(max_length=20)
-    user = models.ForeignKey('User', on_delete=models.CASCADE)
+    user = models.ForeignKey('User', related_name="personal_info", on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'{self.last_name} {self.first_name} {self.middle_name} - {self.position}'
+        return f'{self.first_name} {self.last_name} {self.middle_name} {self.work_experience} {self.position} {self.email} {self.phone_number} {self.user}'
 
 
 class Location(models.Model):
@@ -56,7 +56,7 @@ class Application(models.Model):
     location = models.ForeignKey('Location', on_delete=models.CASCADE, null=True)
 
     def __str__(self):
-            return self.status
+        return f'{self.status} {self.user} {self.location}'
 
 
 class Documents(models.Model):

@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth import logout
+
+from relocator import settings
 from .models import *
 from .forms import *
 #def home(request):
@@ -11,11 +13,7 @@ def logout_view(request):
     return redirect('login')
 
 def user(request):
-    context = Personal_Info.objects.filter(user_id = request.user.id)
-    context_len = int(len(Personal_Info.objects.filter(user_id = request.user.id)))
-    print("=>", context_len)
-    print("=>", context)
-    return render(request, 'main/user/base.html', {'context': context, 'context_len':context_len}) 
+    return render(request, 'main/user/base.html') 
 
 def begin(request):
     if not request.user.is_authenticated:
@@ -40,6 +38,8 @@ def userApplication(request):
     return render(request, 'main/user/application.html') 
 
 def userProfile(request):
+    personal_info = Personal_Info.objects.filter(user_id = request.user.id)
+    personal_info_len = len(Personal_Info.objects.filter(user_id = request.user.id))
     if not request.user.is_authenticated:
         return HttpResponse("403", status=403)
     else:
@@ -60,12 +60,26 @@ def userProfile(request):
 
     else:
         form = AddProfileForm()
-
-    return render(request, 'main/user/profile.html', {'form': form}) 
+    return render(request, 'main/user/profile.html', {'form': form, 'personal_info': personal_info, 'personal_info_len': personal_info_len}) 
 
 def userRelocatedEmployees(request):
-    user = User.objects.all()
-    return render(request, 'main/user/relocatedEmployees.html', {'user': user})  
+    applications = Application.objects.filter(status='done').select_related("user", "location")
+    for item in applications:
+        item.personal_info = Personal_Info.objects.get(user=item.user)
+
+    context = {
+        'YANDEX_MAPS_API_KEY': settings.YANDEX_MAPS_API_KEY,
+    }
+    return render(
+        request,
+        'main/user/relocatedEmployees.html',
+        {
+            'applications': applications,
+        }
+    )  
+
+def userNews(request):
+    return render(request, 'main/user/news.html') 
 
 
 def hr(request):

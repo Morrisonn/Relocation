@@ -3,25 +3,52 @@
 {% bootstrap_css %}
 {% bootstrap_javascript %}
 {% block profile %}
-<div class="template-div">
-    <form action="{% url 'userProfile' %}" method="post">
-        {% csrf_token %}
+<link rel="stylesheet" href="https://bootstraptema.ru/plugins/2015/bootstrap3/bootstrap.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+<script src="https://bootstraptema.ru/plugins/jquery/jquery-1.11.3.min.js"></script>
+<script src="https://bootstraptema.ru/plugins/2015/b-v3-3-6/bootstrap.min.js"></script>
 
-        <div class="form-error">{{ form.non_field_errors }}</div>
-        
-        {% if context_len == 0 %}
-            <p>нет записи</p>
+    {% if personal_info_len == 0 %}
+        <div class="template-div">
+            <form action="{% url 'userProfile' %}" method="post">
+                {% csrf_token %}
+                <div class="form-error">{{ form.non_field_errors }}</div>  
+            {% for f in form %}
+            <p><label class="form-label" for="{{ f.id_for_label }}">{{f.label}}: </label>{{ f }}</p>
+            <div class="form-error">{{ f.errors }}</div>
+            {% endfor %}
+                <button type="submit" class="btn btn-primary">Добавить</button>
+            </form>   
+        </div>    
         {% else %}
-            <p>есть запись</p>  
-        {% endif %}  
-    {% for f in form %}
-    <p><label class="form-label" for="{{ f.id_for_label }}">{{f.label}}: </label>{{ f }}</p>
-    <div class="form-error">{{ f.errors }}</div>
-    {% endfor %}
-        
-
-
-        <button type="submit" class="btn btn-primary">Добавить</button>
-    </form>   
+            
+        {% endif %} 
+<div class="template-div">
 </div>    
+
+    <div id="myTabContent" class="tab-content">
+   <hr>
+    <div class="tab-pane fade active in" id="detail">
+    <h4>Ваш профиль</h4>
+    <table class="table table-th-block">
+    <tbody>
+    <tr><td class="active">Имя:</td><td>{{personal_info.0.first_name}}</td></tr>
+    <tr><td class="active">Фамилия:</td><td>{{personal_info.0.last_name}}</td></tr>
+    <tr><td class="active">Отчество:</td><td>{{personal_info.0.middle_name}}</td></tr>
+    <tr><td class="active">Стаж работы:</td><td>{{personal_info.0.work_experience}}</td></tr>
+    <tr><td class="active">Доджность:</td><td>{{personal_info.0.position}}</td></tr>
+    <tr><td class="active">Адрес электронной почты:</td><td>{{personal_info.0.email}}</td></tr>
+    <tr><td class="active">Номер телефона:</td><td>{{personal_info.0.phone_number}}</td></tr>
+    </tbody>
+    </table>
+    <ul id="myTab" class="nav nav-pills">
+        <li class="active"><a href="#detail" data-toggle="tab">О пользователе</a></li>
+        <li class=""><a href="#contact" data-toggle="tab">Отправить сообщение</a></li>
+    </ul>
+    </div>
+    <div class="tab-pane fade" id="contact">
+    <p></p>
+    </div>
+    </div>
+
 {% endblock %}

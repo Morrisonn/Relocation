@@ -133,3 +133,4 @@ MEDIA_URL = '/media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'main.User'
+YANDEX_MAPS_API_KEY = 'ваш API-ключ'

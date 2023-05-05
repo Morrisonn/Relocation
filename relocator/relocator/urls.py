@@ -37,6 +37,7 @@ urlpatterns = [
     path('user/application/', userApplication, name = 'userApplication'),
     path('user/profile/', userProfile, name = 'userProfile'),
     path('user/relocatedEmployees/', userRelocatedEmployees, name = 'userRelocatedEmployees'),
+    path('user/news/', userNews, name = 'userNews'),
 
     path('hr/', hr, name='hr'),
     path('hr/applications/', hrApplications, name = 'hrApplications'),

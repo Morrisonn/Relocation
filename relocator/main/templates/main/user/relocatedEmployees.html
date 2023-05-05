@@ -2,27 +2,59 @@
 
 {% block relocatedEmployees %}
 <div class="template-div">
-    <table>
+    <table class="table table-hover"    >
         <thead>
             <tr>
                 <th>Имя</th>
                 <th>Фамилия</th>
                 <th>Отчество</th>
-                <th>Номер телефона</th>
                 <th>Email</th>
+                <th>Номер телефона</th>
+                <th>Страна</th>
+                <th>Город</th>
             </tr>
         </thead>
         <tbody>
-            {% for obj in user %}
-            <tr>
-                <td>{{ obj.first_name }}</td>
-                <td>{{ obj.last_name }}</td>
-                <td>{{ obj.middle_name }}</td>
-                <td>{{ obj.phone_number }}</td>
-                <td>{{ obj.email }}</td>
-            </tr>
+            {% for application in applications %}
+                <tr>
+                    <td>{{ application.personal_info.first_name }}</td>
+                    <td>{{ application.personal_info.last_name }}</td>
+                    <td>{{ application.personal_info.middle_name }}</td>
+                    <td>{{ application.personal_info.email }}</td>
+                    <td>{{ application.personal_info.phone_number }}</td>
+                    <td>{{ application.location.country }}</td>
+                    <td>{{ application.location.city }}</td>
+                </tr>
             {% endfor %}
         </tbody>
+        <tbody>
+            
+        </tbody>
     </table>
-</div>
+    <br>
+    <p>{{personal_info}}</p>
+    
+    <!-- <div id="map" style="width: 100%; height: 500px"></div>
+
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=1c863c16-81b2-4b8f-be71-2007755b1fca&lang=ru_RU" type="text/javascript"></script>
+    <script type="text/javascript">
+        ymaps.ready(function () {
+            var myMap = new ymaps.Map('map', {
+                    center: [53.90, 27.56],
+                    zoom: 10
+                }, {
+                    searchControlProvider: 'yandex#search'
+                });
+            var myPlacemark = new ymaps.Placemark([53.90, 27.56], {
+                    hintContent: '{{ city.name }}',
+                    balloonContent: '{{ city.description }}'
+                }, {
+                    preset: 'islands#icon',
+                    iconColor: '#0095b6'
+                });
+            myMap.geoObjects.add(myPlacemark);
+        });
+    </script>
+
+</div> -->
 {% endblock %}
