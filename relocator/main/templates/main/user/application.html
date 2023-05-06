@@ -35,7 +35,15 @@
                 <button type="submit" class="btn btn-primary">Подтвердить</button>
             </form>
     {% else %} 
-            <p>{{ user_application.status }}</p>
+        {% if user_application.status == "first" %}
+            <p>Первый</p>
+        {% elif user_application.status == "second" %}
+            <p>Второй</p>
+        {% elif user_application.status == "third" %}
+            <p>Третий</p>
+        {% else %}
+            <p>Статус неизвестен</p>
+        {% endif %}
     {% endif %}  
 </div>
 

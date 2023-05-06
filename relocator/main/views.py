@@ -15,11 +15,16 @@ def logout_view(request):
 def user(request):
     new_username = Personal_Info.objects.filter(user_id = request.user.id)
     new_username_len = len(new_username)
+
+    application = Application.objects.get(user=request.user)
+    status = application.status
+    print("-----=>", status)
     return render(request,
                    'main/user/base.html',
                    {
                     "new_username" : new_username.first(),
                     "new_username_len" : new_username_len,
+                    'status': status,
                    }
     ) 
 
