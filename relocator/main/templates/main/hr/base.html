@@ -20,9 +20,11 @@
 			<li><a href="{% url 'hrApplications' %}">Заявки</a></li>
 			<li class="last"><a href="{% url 'logout_view' %}">Выход</a></li>
 			{% if user.is_authenticated %}
-				<li class="last">Добро пожаловать {{ user.username }}</li>
-			{% else %}	
-				<li class="last">Добро пожаловать {{ user.username }}</li>
+				{% if not user.first_name %}
+					<li class="last">Добро пожаловать {{ user.username }}</li>
+				{% else %}	
+					<li class="last">Добро пожаловать {{ user.first_name }}</li>
+				{% endif %}
 			{% endif %}	
 			</ul>
 			<div class="clear"></div>

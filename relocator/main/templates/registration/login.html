@@ -15,11 +15,15 @@ ul {
 ul li {
     color: red;
 }
+body{
+    height: 270px;
+}
 .login-form {
     width: 500px;
-    background-color: rgb(199, 169, 169);
+    background-color: rgb(165, 178, 224);
     padding: 20px;
     border-radius: 10px;
+    border: 1px solid black;
     margin: 0 auto;
     margin-top: 200px;
 }
@@ -34,6 +38,20 @@ ul li {
 h1{
     margin-top: 0px !important;
     text-align: center !important;
+}
+button{
+    margin-top: 20px;
+    margin-left: 85px;
+    width: 280px;
+    color: black;
+}
+.btn-primary {
+  color: black;
+  font-size: 16px;
+}
+label{
+    margin-top: 2px;
+    font-size: 16px;
 }
 </style>
 
@@ -52,13 +70,15 @@ h1{
 		
         
         <form action="{% url 'login' %}" method="post" class="login-form">
-            <h1 class="h1">АВТОРИЗАЦИЯ</h1>
-            {% if form.errors %}
-                <p>{{ form.errors.error }}</p>
-            {% endif %}
-            {{ form }}
-            {% csrf_token %}
-            <button type="submit" class="btn btn-default">Авторизация</button>
+            <div class="aitorisation">
+                <h1 class="h1">АВТОРИЗАЦИЯ</h1>
+                {% if form.errors %}
+                    <p>{{ form.errors.error }}</p>
+                {% endif %}
+                {{ form }}
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary">Авторизация</button>  
+            </div>
         </form>
             
         <!--

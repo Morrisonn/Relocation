@@ -24,13 +24,17 @@ class News(models.Model):
 
 
 class Personal_Info(models.Model):
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
-    middle_name = models.CharField(max_length=50, blank=True, null=True)
-    work_experience = models.PositiveIntegerField()
-    position = models.CharField(max_length=50)
-    email = models.EmailField()
-    phone_number = models.CharField(max_length=20)
+    first_name = models.CharField(max_length=50, blank=False, null=True)
+    last_name = models.CharField(max_length=50, blank=False, null=True)
+    middle_name = models.CharField(max_length=50, blank=False, null=True)
+    photo = models.ImageField(upload_to='photos/', blank=True, null=True)
+    gender = models.CharField(max_length=10, choices=[('male', 'Мужской'), ('female', 'Женский')], blank=False, null=True)
+    rate = models.DecimalField(max_digits=10, decimal_places=2, blank=False, null=True)
+    date_of_birth = models.DateField(blank=False, null=True)
+    work_experience = models.PositiveIntegerField(blank=False, null=True)
+    position = models.CharField(max_length=50, blank=False, null=True)
+    email = models.EmailField(blank=False, null=True)
+    phone_number = models.CharField(max_length=20, blank=False, null=True)
     user = models.ForeignKey('User', related_name="personal_info", on_delete=models.CASCADE)
 
     def __str__(self):
@@ -41,6 +45,8 @@ class Location(models.Model):
     country = models.CharField(max_length=100, verbose_name="Страна")
     city = models.CharField(max_length=100, verbose_name="Город")
     description = models.TextField(verbose_name="Описание")
+    latitude = models.FloatField(verbose_name="Широта", null=True)
+    longitude = models.FloatField(verbose_name="Долгота", null=True)
 
     def __str__(self):
             return self.country

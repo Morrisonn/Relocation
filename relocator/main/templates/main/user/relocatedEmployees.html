@@ -1,8 +1,17 @@
 {% extends 'main/user/base.html' %}
 
 {% block relocatedEmployees %}
-<div class="template-div">
-    <table class="table table-hover"    >
+<style>
+    #rerelocatedEmployeesDiv{
+        height: 500px;
+    }
+</style>
+<div class="template-div" id="relocatedEmployeesDiv">
+    <form method="get">
+        {{ locations_filter.form }}
+        <button class="btn btn-primary" type="submit">Фильтрация</button>
+    </form>
+    <table class="table table-hover">
         <thead>
             <tr>
                 <th>Имя</th>
@@ -55,6 +64,6 @@
             myMap.geoObjects.add(myPlacemark);
         });
     </script>
-
-</div> -->
+ -->
+</div>
 {% endblock %}

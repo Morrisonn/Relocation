@@ -2,6 +2,41 @@
 
 {% block application %}
 <div class="template-div">
-    <button type="submit" class="btn btn-primary">создать заявку на релокацию</button>
+    {% if user_application_len == 0 %}
+        <button type="submit" class="btn btn-primary">создать заявку на релокацию</button>
+        <br>
+            <form method="post" action="{% url 'newUserApplication' %}">
+            {% csrf_token %}
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Выбор</th>
+                            <th>Страна</th>
+                            <th>Город</th>
+                            <th>Описание</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for location in locations %}
+                            <tr>
+                                <td>
+                                    <input type="radio" name="selected_location" value="{{ location.id }}">
+                                </td>
+                                <td>{{ location.country }}</td>
+                                <td>{{ location.city }}</td>
+                                <td>{{ location.description }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tbody>
+                        
+                    </tbody>
+                </table>
+                <button type="submit" class="btn btn-primary">Подтвердить</button>
+            </form>
+    {% else %} 
+            <p>{{ user_application.status }}</p>
+    {% endif %}  
 </div>
+
 {% endblock %}

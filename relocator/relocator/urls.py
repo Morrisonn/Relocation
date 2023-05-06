@@ -35,6 +35,7 @@ urlpatterns = [
 
     path('user/', user, name='user'),
     path('user/application/', userApplication, name = 'userApplication'),
+    path('user/application/new', newUserApplication, name = 'newUserApplication'),
     path('user/profile/', userProfile, name = 'userProfile'),
     path('user/relocatedEmployees/', userRelocatedEmployees, name = 'userRelocatedEmployees'),
     path('user/news/', userNews, name = 'userNews'),
@@ -43,7 +44,6 @@ urlpatterns = [
     path('hr/applications/', hrApplications, name = 'hrApplications'),
     #Возможно нужно изменить отображение по id (тип int) -- урок 3 5:00
     path('hr/employeeProfile/<int:appid>/', hrEmployeeProfile),
-
     
 ]
 
