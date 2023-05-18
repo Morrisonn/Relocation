@@ -4,60 +4,63 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('main', '0002_alter_user_options_personal_info_date_of_birth_and_more'),
+        ("main", "0002_alter_user_options_personal_info_date_of_birth_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='personal_info',
-            name='date_of_birth',
+            model_name="personal_info",
+            name="date_of_birth",
             field=models.DateField(null=True),
         ),
         migrations.AlterField(
-            model_name='personal_info',
-            name='email',
+            model_name="personal_info",
+            name="email",
             field=models.EmailField(max_length=254, null=True),
         ),
         migrations.AlterField(
-            model_name='personal_info',
-            name='first_name',
+            model_name="personal_info",
+            name="first_name",
             field=models.CharField(max_length=50, null=True),
         ),
         migrations.AlterField(
-            model_name='personal_info',
-            name='gender',
-            field=models.CharField(choices=[('male', 'Мужской'), ('female', 'Женский')], max_length=10, null=True),
+            model_name="personal_info",
+            name="gender",
+            field=models.CharField(
+                choices=[("male", "Мужской"), ("female", "Женский")],
+                max_length=10,
+                null=True,
+            ),
         ),
         migrations.AlterField(
-            model_name='personal_info',
-            name='last_name',
+            model_name="personal_info",
+            name="last_name",
             field=models.CharField(max_length=50, null=True),
         ),
         migrations.AlterField(
-            model_name='personal_info',
-            name='middle_name',
+            model_name="personal_info",
+            name="middle_name",
             field=models.CharField(max_length=50, null=True),
         ),
         migrations.AlterField(
-            model_name='personal_info',
-            name='phone_number',
+            model_name="personal_info",
+            name="phone_number",
             field=models.CharField(max_length=20, null=True),
         ),
         migrations.AlterField(
-            model_name='personal_info',
-            name='position',
+            model_name="personal_info",
+            name="position",
             field=models.CharField(max_length=50, null=True),
         ),
         migrations.AlterField(
-            model_name='personal_info',
-            name='rate',
+            model_name="personal_info",
+            name="rate",
             field=models.DecimalField(decimal_places=2, max_digits=10, null=True),
         ),
         migrations.AlterField(
-            model_name='personal_info',
-            name='work_experience',
+            model_name="personal_info",
+            name="work_experience",
             field=models.PositiveIntegerField(null=True),
         ),
     ]

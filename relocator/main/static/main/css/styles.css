@@ -31,7 +31,8 @@ time, mark, audio, video {
 }
 
 html, body {
-	background-color: #d7d4cf;
+	/* background-color: #d9e7ef; */
+	background-color: #98afbd;
 	font-family: 'Arial';
 	margin: 0;
 	padding: 0;
@@ -109,7 +110,7 @@ ul.list-articles li {
 .clear {clear: both;}
 
 .header {
-	background: #3F4137;
+	background: #3076BF;
 	height: 60px;
 }
 
@@ -124,7 +125,7 @@ ul.mainmenu {
 	margin: 0;
 	padding: 0;
 	height: 60px;
-	color: #fdc073;
+	color: #e2e8ee;
 	font-size: 20px;
 	overflow: hidden;
 }
@@ -136,11 +137,11 @@ ul.mainmenu li.logo {margin: 0;}
 ul.mainmenu li.last {float: right;}
 
 ul.mainmenu li a {
-	color: #fdc073;
+	color: #e2e8ee;
 	text-decoration: none;
 }
 ul.mainmenu li a:hover {
-	color: #FDA83D;
+	color: #ffffff;
 }
 
 .panelitems {
@@ -171,7 +172,7 @@ ul.langitem li.descr {
 	overflow: hidden;
 }
 ul.langitem li a {
-	color: #fdc073;
+	color: #FFFFFF;
 	text-decoration: none;
 	font-size: 20px;
 }
@@ -179,7 +180,7 @@ ul.langitem li a:hover {
 	color: #FDA83D;
 }
 div.button {
-	background: #3F4137;
+	background: #91A1E0;
 	max-width: 200px;
 	margin: 0 auto;
 	padding: 5px 20px 5px 20px;
@@ -318,12 +319,12 @@ ul.lang-list li {
 	display: inline-block;
 	margin-left: 40px;
 }
-ul.lang-list li.selected {color: #fdc073; border-bottom: 1px solid #fdc073;}
+ul.lang-list li.selected {color: #FFFFFF; border-bottom: 1px solid #FFFFFF;}
 ul.lang-list li a {
 	color: #eee;
 	text-decoration: none;
 }
-ul.lang-list li a:hover {color: #fdc073;}
+ul.lang-list li a:hover {color: #FFFFFF;}
 
 .topic-subject .topic-line {
 	border-bottom: 1px solid #CC0000;
@@ -389,7 +390,7 @@ ul.lang-list li a:hover {color: #fdc073;}
 #footer {
 	box-sizing: border-box;
 
-	background: #3F4137;
+	background: #91A1E0;
 	padding: 5px;
 	color: #aaa;
 	font-size: 14px;
@@ -422,9 +423,4 @@ ul.lang-list li a:hover {color: #fdc073;}
 .form-button {
     min-width: 200px;
     font-size: 16px;
-}
-
-.content-div{
-	width: 300px;
-	height: 300px;
 }

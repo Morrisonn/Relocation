@@ -4,20 +4,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('main', '0003_alter_personal_info_date_of_birth_and_more'),
+        ("main", "0003_alter_personal_info_date_of_birth_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='location',
-            name='latitude',
-            field=models.FloatField(null=True, verbose_name='Широта'),
+            model_name="location",
+            name="latitude",
+            field=models.FloatField(null=True, verbose_name="Широта"),
         ),
         migrations.AddField(
-            model_name='location',
-            name='longitude',
-            field=models.FloatField(null=True, verbose_name='Долгота'),
+            model_name="location",
+            name="longitude",
+            field=models.FloatField(null=True, verbose_name="Долгота"),
         ),
     ]

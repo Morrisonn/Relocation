@@ -6,39 +6,53 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('main', '0001_initial'),
+        ("main", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='user',
-            options={'ordering': ['-role', 'username'], 'verbose_name': 'Пользователи', 'verbose_name_plural': 'Пользователи'},
+            name="user",
+            options={
+                "ordering": ["-role", "username"],
+                "verbose_name": "Пользователи",
+                "verbose_name_plural": "Пользователи",
+            },
         ),
         migrations.AddField(
-            model_name='personal_info',
-            name='date_of_birth',
+            model_name="personal_info",
+            name="date_of_birth",
             field=models.DateField(blank=True, null=True),
         ),
         migrations.AddField(
-            model_name='personal_info',
-            name='gender',
-            field=models.CharField(blank=True, choices=[('male', 'Мужской'), ('female', 'Женский')], max_length=10, null=True),
+            model_name="personal_info",
+            name="gender",
+            field=models.CharField(
+                blank=True,
+                choices=[("male", "Мужской"), ("female", "Женский")],
+                max_length=10,
+                null=True,
+            ),
         ),
         migrations.AddField(
-            model_name='personal_info',
-            name='photo',
-            field=models.ImageField(blank=True, null=True, upload_to='photos/'),
+            model_name="personal_info",
+            name="photo",
+            field=models.ImageField(blank=True, null=True, upload_to="photos/"),
         ),
         migrations.AddField(
-            model_name='personal_info',
-            name='rate',
-            field=models.DecimalField(blank=True, decimal_places=2, max_digits=10, null=True),
+            model_name="personal_info",
+            name="rate",
+            field=models.DecimalField(
+                blank=True, decimal_places=2, max_digits=10, null=True
+            ),
         ),
         migrations.AlterField(
-            model_name='personal_info',
-            name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='personal_info', to=settings.AUTH_USER_MODEL),
+            model_name="personal_info",
+            name="user",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="personal_info",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
     ]

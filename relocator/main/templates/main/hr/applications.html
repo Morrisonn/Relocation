@@ -1,5 +1,75 @@
 {% extends 'main/hr/base.html' %}
-
 {% block applications %}
-<h1>Все заявки сотрудников</h1>
+<style>
+    .template-div {
+        margin-top: 20px;
+        display: flex;
+        flex-direction: column;
+        /* height: 100vh; */
+    }
+    label{
+        margin-left: 40px;
+        margin-right: 5px;
+    }
+    button{
+        margin-left: 40px;
+    }
+    .form-div {
+        width: 100%;
+        flex-grow: 1;
+    }
+    table {
+        flex-grow: 2;
+        margin-top: 2rem;
+    }
+</style>
+<div class="template-div">
+    <div class="form-div">
+        <form method="get">
+            {{ infos_filter.form }}
+            {{ status_filter.form }}
+            <button class="btn btn-primary" type="submit">Фильтрация</button>
+        </form>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Статус заявки</th>
+                    <th>Имя</th>
+                    <th>Фамилия</th>
+                    <th>Отчество</th>
+                    <th>Страна релокации</th>
+                    <th>Город релокации</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for application in applications %}
+                        <tr onclick="location.href='{% url 'hr_userPage' userId=application.personal_info.user_id %}'" style="cursor:pointer;">
+                            <td>
+                                {% if application.status == "first" %}
+                                    Статус 1
+                                {% elif application.status == "second" %}
+                                    Статус 2
+                                {% elif application.status == "third" %}
+                                    Статус 3
+                                {% else %}
+                                    Ошибка
+                                {% endif %}
+                            </td>
+                            <td>{{ application.personal_info.first_name }}</td>
+                            <td>{{ application.personal_info.last_name }}</td>
+                            <td>{{ application.personal_info.middle_name }}</td>
+                            <td>{{ application.location.country }}</td>
+                            <td>{{ application.location.city }}</td>
+                        </tr>
+                {% endfor %}
+            </tbody>
+            <tbody>
+                
+            </tbody>
+        </table>
+    </div>
+</div>
+
 {% endblock %}

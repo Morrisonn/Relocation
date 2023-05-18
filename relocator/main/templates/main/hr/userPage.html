@@ -1,73 +1,18 @@
-{% extends 'main/user/base.html' %}
+{% extends 'main/hr/base.html' %}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 {% load bootstrap4 %}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
-{% block application %}
-
-<!-- <style>
-  #map{
-    
-  }
-</style> -->
+{% block userPage %}
 
 <div class="template-div">
-    {% if user_application_len != 0 %}
-        <!-- <button type="submit" class="btn btn-primary">создать заявку на релокацию</button> -->
-        <br>
-            <form method="post" action="{% url 'newUserApplication' %}">
-            {% csrf_token %}
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>Выбор</th>
-                            <th>Страна</th>
-                            <th>Город</th>
-                            <th>Описание</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for location in locations %}
-                            <tr>
-                                <td>
-                                    <input type="radio" name="selected_location" value="{{ location.id }}">
-                                </td>
-                                <td>{{ location.country }}</td>
-                                <td>{{ location.city }}</td>
-                                <td>{{ location.description }}</td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                    <tbody>
-                        
-                    </tbody>
-                </table>
-                <button type="submit" class="btn btn-primary">Подтвердить</button>
-            </form>
-            <div id="map" style="width: 100%; height: 500px"></div>
-
-            <script src="https://api-maps.yandex.ru/2.1/?apikey=1c863c16-81b2-4b8f-be71-2007755b1fca&lang=ru_RU" type="text/javascript"></script>        
-            <script type="text/javascript">
-                ymaps.ready(function () {
-                    var myMap = new ymaps.Map('map', {
-                            center: [53.90, 27.56],
-                            zoom: 10
-                        }, {
-                            searchControlProvider: 'yandex#search'
-                        });
-                    var myPlacemark = new ymaps.Placemark([53.90, 27.56], {
-                            hintContent: '{{ city.name }}',
-                            balloonContent: '{{ city.description }}'
-                        }, {
-                            preset: 'islands#icon',
-                            iconColor: '#0095b6'
-                        });
-                    myMap.geoObjects.add(myPlacemark);
-                });
-            </script>
-    {% else %} 
 
     <style>
+        #employee_profile{
+            text-align: center;
+            font-size: 24px;
+            font-style: bold !important;
+        }
         h1 {
             position: absolute;
             top: 40%;
@@ -99,6 +44,19 @@
         }
     }
     </style>
+
+    <!-- <style>
+        
+        h4{
+            text-align: center;
+        }
+        .alert.alert-info {
+        color: #fff;
+        background-color: #fff;
+        border-color: #fff;
+        }
+        
+    </style> -->
 
     <div class="container">
 		<div class="row">
@@ -137,7 +95,7 @@
 
     <script>
 		document.addEventListener("DOMContentLoaded", function(event) {
-		var status = "{{ status }}";
+		var status = "first";
 		var progressBar = document.querySelector(".progress-bar");
 		
 		if (status == "first") {
@@ -166,7 +124,39 @@
               <p>Статус неизвестен</p>
           {% endif %}
         </div>
-    {% endif %}  
-</div>
 
+        <div id="myTabContent" class="tab-content">
+            <hr>
+            <!-- <div class="tab-pane fade active in" id="detail"> -->
+            <h3 id="employee_profile">Профиль сотрудника</h3>
+            <table class="table">
+            <tbody>
+            <tr><td class="active">Имя:</td><td>{{personal_info.0.first_name}}</td></tr>
+            <tr><td class="active">Фамилия:</td><td>{{personal_info.0.last_name}}</td></tr>
+            <tr><td class="active">Отчество:</td><td>{{personal_info.0.middle_name}}</td></tr>
+            <tr><td class="active">Пол:</td><td>
+                
+                {% if personal_info.0.gender == "male" %}
+                    мужской
+                {% else %}
+                    женский
+                {%endif%}
+                </td></tr>
+            <tr><td class="active">Дата рождения:</td><td>{{personal_info.0.date_of_birth}}</td></tr>
+            <tr><td class="active">Стаж работы:</td><td>{{personal_info.0.work_experience}}</td></tr>
+            <tr><td class="active">Доджность:</td><td>{{personal_info.0.position}}</td></tr>
+            <tr><td class="active">Ставка:</td><td>{{personal_info.0.rate}}</td></tr>
+            <tr><td class="active">Адрес электронной почты:</td><td>{{personal_info.0.email}}</td></tr>
+            <tr><td class="active">Номер телефона:</td><td>{{personal_info.0.phone_number}}</td></tr>
+            </tbody>
+            </table>
+            <!-- <ul id="myTab" class="nav nav-pills">
+                <li id="btn1"><a href="#contact" data-toggle="tab">Редактировать</a></li>
+            </ul> -->
+            <!-- </div> -->
+            <div class="tab-pane fade" id="contact">
+            <p></p>
+            </div>
+        </div>
+</div>
 {% endblock %}
