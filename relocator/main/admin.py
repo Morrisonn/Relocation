@@ -22,10 +22,15 @@ class LocationAdmin(admin.ModelAdmin):
     search_fields = ("id", "country", "city")
     list_filter = ("country", "city")
 
+class NewsAdmin(admin.ModelAdmin):
+    list_display = ('title', 'created_at')
+    search_fields = ('title',)  # Добавляем поля для поиска
+    list_filter = ('created_at',)
 
 # admin.site.register(User, LocationUser)
+admin.site.register(News, NewsAdmin)
 admin.site.register(Location, LocationAdmin)
-admin.site.register(News)
+# admin.site.register(News)
 
 
 class MyAdminSite(AdminSite):

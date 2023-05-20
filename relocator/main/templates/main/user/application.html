@@ -5,19 +5,21 @@
 {% bootstrap_javascript %}
 {% block application %}
 
-<!-- <style>
+<style>
   #map{
-    
+    position: relative;
+    /* top: 200px;
+    left: 100px; */
   }
-</style> -->
+</style>
 
-<div class="template-div">
+<div class="template-div" >
     {% if user_application_len != 0 %}
         <!-- <button type="submit" class="btn btn-primary">создать заявку на релокацию</button> -->
         <br>
             <form method="post" action="{% url 'newUserApplication' %}">
             {% csrf_token %}
-                <table class="table table-hover">
+                <table class="table table-hover" style="width: 100%;">
                     <thead>
                         <tr>
                             <th>Выбор</th>
@@ -30,11 +32,13 @@
                         {% for location in locations %}
                             <tr>
                                 <td>
-                                    <input type="radio" name="selected_location" value="{{ location.id }}">
+                                    <input type="radio" name="selected_location" value="{{ location.id }}" onclick="" onchange="updatePlacemark([{{location.latitude}}, {{location.longitude}}])">
                                 </td>
                                 <td>{{ location.country }}</td>
                                 <td>{{ location.city }}</td>
                                 <td>{{ location.description }}</td>
+                                <!-- <td>{{ location.latitude }}</td>
+                                <td>{{ location.longitude }}</td> -->
                             </tr>
                         {% endfor %}
                     </tbody>
@@ -44,10 +48,18 @@
                 </table>
                 <button type="submit" class="btn btn-primary">Подтвердить</button>
             </form>
+            
             <div id="map" style="width: 100%; height: 500px"></div>
 
             <script src="https://api-maps.yandex.ru/2.1/?apikey=1c863c16-81b2-4b8f-be71-2007755b1fca&lang=ru_RU" type="text/javascript"></script>        
             <script type="text/javascript">
+              function updatePlacemark(coordinates) {
+                console.log(coordinates);
+                coordinates[0] += coordinates[1] / 100;
+                coordinates[1] = coordinates[2] + coordinates[3] / 100;
+                console.log(coordinates);
+                placemark.geometry.setCoordinates(coordinates);
+              }
                 ymaps.ready(function () {
                     var myMap = new ymaps.Map('map', {
                             center: [53.90, 27.56],
@@ -55,13 +67,14 @@
                         }, {
                             searchControlProvider: 'yandex#search'
                         });
-                    var myPlacemark = new ymaps.Placemark([53.90, 27.56], {
+                    var myPlacemark = new ymaps.Placemark([53.91, 27.56], {
                             hintContent: '{{ city.name }}',
                             balloonContent: '{{ city.description }}'
                         }, {
                             preset: 'islands#icon',
                             iconColor: '#0095b6'
                         });
+                    window.placemark = myPlacemark;
                     myMap.geoObjects.add(myPlacemark);
                 });
             </script>

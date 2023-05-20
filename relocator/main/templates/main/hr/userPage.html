@@ -57,7 +57,41 @@
         }
         
     </style> -->
-
+    <div style="width: 300px !important; height: 200px !important;">
+      <div id="myTabContent" class="tab-content" >
+        <hr>
+        <!-- <div class="tab-pane fade active in" id="detail"> -->
+        <h3 id="employee_profile">Профиль сотрудника</h3>
+        <table class="table">
+        <tbody>
+        <tr><td class="active">Имя:</td><td>{{personal_info.0.first_name}}</td></tr>
+        <tr><td class="active">Фамилия:</td><td>{{personal_info.0.last_name}}</td></tr>
+        <tr><td class="active">Отчество:</td><td>{{personal_info.0.middle_name}}</td></tr>
+        <tr><td class="active">Пол:</td><td>
+            
+            {% if personal_info.0.gender == "male" %}
+                мужской
+            {% else %}
+                женский
+            {%endif%}
+            </td></tr>
+        <tr><td class="active">Дата рождения:</td><td>{{personal_info.0.date_of_birth}}</td></tr>
+        <tr><td class="active">Стаж работы:</td><td>{{personal_info.0.work_experience}}</td></tr>
+        <tr><td class="active">Доджность:</td><td>{{personal_info.0.position}}</td></tr>
+        <tr><td class="active">Ставка:</td><td>{{personal_info.0.rate}}</td></tr>
+        <tr><td class="active">Адрес электронной почты:</td><td>{{personal_info.0.email}}</td></tr>
+        <tr><td class="active">Номер телефона:</td><td>{{personal_info.0.phone_number}}</td></tr>
+        </tbody>
+        </table>
+        <!-- <ul id="myTab" class="nav nav-pills">
+            <li id="btn1"><a href="#contact" data-toggle="tab">Редактировать</a></li>
+        </ul> -->
+        <!-- </div> -->
+        <div class="tab-pane fade" id="contact">
+        <p></p>
+        </div>
+      </div>
+    </div>
     <div class="container">
 		<div class="row">
 		  <div class="col-md-12" >
@@ -89,13 +123,14 @@
 		  </div>
 		</div>
     <p>1. Заявка отправлена</p>
-    <p>2. Заявка отправлена</p>
-    <p>3. Заявка отправлена</p>
+    <p>2. Назначено собеседование</p>
+    <p>3. Собеседование пройдено</p>
+    <p>4. Собеседование пройдено</p>
 	  </div>
 
     <script>
 		document.addEventListener("DOMContentLoaded", function(event) {
-		var status = "first";
+		var status = "{{ status }}";
 		var progressBar = document.querySelector(".progress-bar");
 		
 		if (status == "first") {
@@ -115,7 +150,76 @@
 	  </script>
         <div>
           {% if user_application.status == "first" %}
-            <h1>Ваша заявка отправлена, ожидайте ответа HR</h1>
+            <script src="https://meet.jit.si/external_api.js"></script>
+            <div id="jitsi-container" style="margin-top: 30px; margin-right: 30px;"></div>
+            <script>
+              const domain = 'meet.jit.si';
+              const userName = 'София';
+              const options = {
+                roomName: generateUniqueRoomName(),
+                width: 800,
+                height: 500,
+                parentNode: document.querySelector('#jitsi-container'),
+                configOverwrite: {
+                  defaultLanguage: 'ru',
+                },
+                interfaceConfigOverwrite: {
+                  DEFAULT_LANGUAGE: 'ru',
+                  LANG_DETECTION: true,
+                  LANGUAGES: {
+                    ru: 'Русский',
+                  },
+                },
+              };
+
+              const api = new JitsiMeetExternalAPI(domain, options);
+              // Функция для генерации уникального идентификатора встречи
+              function generateUniqueRoomName() {
+                // В данном примере используется текущая дата и случайное число
+                const firstName = "София";
+                const timestamp = Date.now();
+                const random = Math.floor(Math.random() * 10000);
+                // return `meeting-${timestamp}-${random}`;
+                return `${firstName}-meeting-${timestamp}-${random}`
+              }
+              // const meetingURL = api.getMeetingURL();
+              // alert(`URL встречи: ${meetingURL}`);
+
+              const exitButton = document.querySelector('#exit-button');
+              exitButton.addEventListener('click', () => {
+                api.dispose();
+              });
+              // console.log('URL встречи:', meetingURL);
+
+              api.addEventListener('ready', () => {
+                // Получение URL встречи
+                const meetingURL = api.getMeetingURL();
+                console.log('URL встречи:', meetingURL);
+
+                const meetingLink = document.createElement('a');
+                meetingLink.href = meetingURL;
+                meetingLink.textContent = 'Ссылка на встречу';
+                document.body.appendChild(meetingLink);
+              });
+            </script>
+            <!-- <script>
+              const domain = 'meet.jit.si';
+              const options = {
+                roomName: 'your-room-name',
+                width: 800,
+                height: 600,
+                parentNode: document.querySelector('#jitsi-container'),
+              };
+              const api = new JitsiMeetExternalAPI(domain, options);
+            </script> -->
+            <form action="{% url 'hr_userPage' %}" method="POST">
+              {% csrf_token %}
+              <div class="form-group">
+                <label for="notes">Пометка</label>
+                <textarea class="form-control" id="notes" name="notes" rows="3"></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">Добавить пометку</button>
+            </form>
           {% elif user_application.status == "second" %}
               <p>Второй</p>
           {% elif user_application.status == "third" %}
@@ -124,39 +228,6 @@
               <p>Статус неизвестен</p>
           {% endif %}
         </div>
-
-        <div id="myTabContent" class="tab-content">
-            <hr>
-            <!-- <div class="tab-pane fade active in" id="detail"> -->
-            <h3 id="employee_profile">Профиль сотрудника</h3>
-            <table class="table">
-            <tbody>
-            <tr><td class="active">Имя:</td><td>{{personal_info.0.first_name}}</td></tr>
-            <tr><td class="active">Фамилия:</td><td>{{personal_info.0.last_name}}</td></tr>
-            <tr><td class="active">Отчество:</td><td>{{personal_info.0.middle_name}}</td></tr>
-            <tr><td class="active">Пол:</td><td>
-                
-                {% if personal_info.0.gender == "male" %}
-                    мужской
-                {% else %}
-                    женский
-                {%endif%}
-                </td></tr>
-            <tr><td class="active">Дата рождения:</td><td>{{personal_info.0.date_of_birth}}</td></tr>
-            <tr><td class="active">Стаж работы:</td><td>{{personal_info.0.work_experience}}</td></tr>
-            <tr><td class="active">Доджность:</td><td>{{personal_info.0.position}}</td></tr>
-            <tr><td class="active">Ставка:</td><td>{{personal_info.0.rate}}</td></tr>
-            <tr><td class="active">Адрес электронной почты:</td><td>{{personal_info.0.email}}</td></tr>
-            <tr><td class="active">Номер телефона:</td><td>{{personal_info.0.phone_number}}</td></tr>
-            </tbody>
-            </table>
-            <!-- <ul id="myTab" class="nav nav-pills">
-                <li id="btn1"><a href="#contact" data-toggle="tab">Редактировать</a></li>
-            </ul> -->
-            <!-- </div> -->
-            <div class="tab-pane fade" id="contact">
-            <p></p>
-            </div>
-        </div>
+        
 </div>
 {% endblock %}

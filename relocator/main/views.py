@@ -46,6 +46,19 @@ def begin(request):
 def autorisation(request):
     return render(request, "main/autorization.html")
 
+def userAccount(request):
+    new_username = Personal_Info.objects.filter(user_id=request.user.id)
+    new_username_len = len(new_username)
+    news_content = News.objects.all()
+    return render(
+        request,
+        "main/user/account.html",
+        {
+            "new_username": new_username.first(),
+            "new_username_len": new_username_len,
+            "news_content" : news_content,
+        },
+    )
 
 def userApplication(request):
     user_application = Application.objects.filter(user_id=request.user.id)
@@ -167,12 +180,14 @@ def userRelocatedEmployees(request):
 def userNews(request):
     new_username = Personal_Info.objects.filter(user_id=request.user.id)
     new_username_len = len(new_username)
+    news_content = News.objects.all()
     return render(
         request,
         "main/user/news.html",
         {
             "new_username": new_username.first(),
             "new_username_len": new_username_len,
+            "news_content" : news_content,
         },
     )
 
@@ -207,6 +222,12 @@ def hrApplications(request):
 
 def hr_userPage(request, userId):
     personal_info = Personal_Info.objects.filter(user_id=userId)
+    user_application = Application.objects.filter(user_id=userId)
+    user_application_len = len(user_application)
+    if user_application_len == 0:
+        status = None
+    else:
+        status = user_application.first().status
     # personal_info_len = len(Personal_Info.objects.filter(user_id=userId))
     return render(
         request, 
@@ -214,6 +235,8 @@ def hr_userPage(request, userId):
         {
             "userId": userId,
             "personal_info": personal_info,
+            "user_application": user_application.first(),
+            "status" : status,
         }
     )
     # return HttpResponse(f"Заявка на релокацию номер {appid}")

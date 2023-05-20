@@ -25,5 +25,7 @@ class AddProfileForm(forms.Form):
     email = forms.EmailField(label="email")
     phone_number = forms.CharField(max_length=20, label="Номер телефона")
 
-
+class AddProfileForm(forms.Form):
+    first_name = forms.CharField(max_length=50, label="Пометки")
+    
 # class CreateApplication(forms.Form):

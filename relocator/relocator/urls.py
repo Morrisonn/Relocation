@@ -18,6 +18,7 @@ urlpatterns = [
     path("user/application/", userApplication, name="userApplication"),
     path("user/application/new", newUserApplication, name="newUserApplication"),
     path("user/profile/", userProfile, name="userProfile"),
+    path("user/account/", userAccount, name="userAccount"),
     path(
         "user/relocatedEmployees/",
         userRelocatedEmployees,

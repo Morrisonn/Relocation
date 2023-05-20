@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
@@ -17,10 +18,14 @@ class User(AbstractUser):
 class News(models.Model):
     title = models.CharField(verbose_name="Заголовок", max_length=200)
     content = models.TextField(verbose_name="Текст")
+    created_at = models.DateTimeField(verbose_name="Дата создания", default=timezone.now)
+    image = models.ImageField(verbose_name="Изображение", upload_to="news_images", default='default_image.jpg')
     # user = models.ForeignKey("User", on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.title
+        # return self.title
+        return f"{self.title} {self.content} {self. created_at} {self.image}"
+
     
     class Meta:
         verbose_name = "Новости"

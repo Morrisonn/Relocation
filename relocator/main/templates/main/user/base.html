@@ -28,12 +28,12 @@
 			<li class="last"><a href="{% url 'logout_view' %}">Выход</a></li>
 			{% if user.is_authenticated %}
 				{% if new_username_len == 0 %}
-					<li class="last">Добро пожаловать {{ user.username }}</li>
+					<li class="last"><a href="{% url 'userAccount' %}">Добро пожаловать {{ user.username }}</a></li>
 				{% else %}
-					<li class="last">Добро пожаловать {{ new_username.first_name }}</li>
+					<li class="last"><a href="{% url 'userAccount' %}">Добро пожаловать {{ new_username.first_name }}</a></li>
 				{% endif %}	
 			{% else %}	
-				<li class="last">Добро пожаловать {{ user.username }}</li>	
+				<li class="last"><a href="{% url 'userAccount' %}">Добро пожаловать {{ user.username }}</a></li>	
 			{% endif %}	
 			</ul>
 			<div class="clear"></div>
@@ -52,6 +52,9 @@
 	{% endblock %}
 
 	{% block news %}
+	{% endblock %}
+
+	{% block account %}
 	{% endblock %}
 </div>
 

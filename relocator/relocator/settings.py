@@ -136,4 +136,4 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "main.User"
 YANDEX_MAPS_API_KEY = "ваш API-ключ"
 
-LOGOUT_REDIRECT_URL = 'http://127.0.0.1:8000/autorization/login/'
+LOGOUT_REDIRECT_URL = 'http://127.0.0.1:8000/autorization/login/Й'
