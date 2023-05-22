@@ -214,44 +214,68 @@ flex-direction: column;">
             </div>
             {% endif %}
           {% elif user_application.status == "third" %}
-          <div style="position: absolute; top:20px; left: 0px; margin-top: 50px;">
-            <form method="post" class="checklist-form" style="text-align: center; margin-top: 10px;">
-              {% csrf_token %}
-              {{ formset.management_form }}
-              <div id="input-container">
-                {% for form in formset %}
-                  {{ form.as_p }}
-                {% endfor %}
+          <h1 style="position: absolute; top:70px; left: 0px; margin-top: 10px; width: 300px !important;">Список необходимых документов:</h1>
+            <div style="position: absolute; top:50px; left: 850px;">
+              <div class="container">
+                <div class="row">
+                  <div class="col-md-12" style="width: 250px;">
+                    <h4 style="margin-bottom: 5px; margin-top: 30px; text-align: xenter;">Ваши заметки по собеседованию:</h4>
+                    <div class="card" style="width: 250px; height: 350px;">
+                      <div class="card-body">
+                        <p class="card-text">{{notes.0.notes}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div class="form-group">
-                <button type="button" onclick="removeInputField()" class="btn btn-danger btn-sm" style="margin-right: 5px; width: 100px; padding: 0;"><i class="fas fa-minus">-</i></button>
-                <button type="button" onclick="addInputField()" class="btn btn-success btn-sm" style="width: 100px; padding: 0;"><i class="fas fa-plus">+</i></button>
-              </div>              
-              <div class="form-group">
-                <button type="submit" class="btn btn-primary" style="width: 200px; margin-top: 10px;">Сохранить</button>
+            </div>
+              <div style="position: absolute; top:70px; left: 0px; margin-top: 30px;">
+                <style>
+                  input{
+                    width: 410px;
+                  }
+                  button{
+                    margin-top: 10px;
+                    margin-bottom: 0px;
+                  }
+                </style>
+                <form method="post" class="checklist-form" style="text-align: center; ">
+                  {% csrf_token %}
+                  {{ formset.management_form }}
+                  <div id="input-container">
+                    {% for form in formset %}
+                      <!-- {{ form.as_p }} -->
+                    {% endfor %}
+                  </div>
+                  <div class="form-group" style="margin-bottom: 0px;">
+                    <button type="button" onclick="removeInputField()" class="btn btn-danger btn-sm" style="margin-right: 5px; width: 200px; padding: 0;"><i class="fas fa-minus">Удалить</i></button>
+                    <button type="button" onclick="addInputField()" class="btn btn-success btn-sm" style="width: 200px; padding: 0;"><i class="fas fa-plus">Добавить</i></button>
+                  </div>              
+                  <div class="form-group" style="margin-bottom: 0px;">
+                    <button type="submit" class="btn btn-primary" style="width: 410px;">Сохранить</button>
+                  </div>
+                </form>
               </div>
-            </form>
-          </div>
-            
-            <script>
-              var formsetPrefix = "{{ formset.prefix }}";
-              var totalFormsInput = document.querySelector('#id_' + formsetPrefix + '-TOTAL_FORMS');
-            
-              function addInputField() {
-                var container = document.getElementById("input-container");
+
+              <script>
+                var formsetPrefix = "{{ formset.prefix }}";
+                var totalFormsInput = document.querySelector('#id_' + formsetPrefix + '-TOTAL_FORMS');
+
+                function addInputField() {
+                  var container = document.getElementById("input-container");
                 var formIndex = parseInt(totalFormsInput.value);
 
                 var fieldHtml = `
-                  <div class="form-row">
+                  <div class="form-row" style="margin-left: 1px; height:30px">
                     <div class="form-group">
-                      <input type="text" name="${formsetPrefix}-${formIndex}-field" id="id_${formsetPrefix}-${formIndex}-field">
+                      <input type="text" name="${formsetPrefix}-${formIndex}-name" id="id_${formsetPrefix}-${formIndex}-name">
                     </div>
                   </div>
                 `;
 
                 container.insertAdjacentHTML('beforeend', fieldHtml);
                 totalFormsInput.value = formIndex + 1;
-                
+
                 // Сохранение значения в локальном хранилище браузера
                 var addedField = container.querySelector(`#id_${formsetPrefix}-${formIndex}-field`);
                 addedField.addEventListener('input', function() {
@@ -264,19 +288,17 @@ flex-direction: column;">
                   addedField.value = savedValue;
                 }
               }
-
-            
               function removeInputField() {
                 var container = document.getElementById("input-container");
                 var formIndex = parseInt(totalFormsInput.value) - 1;
-            
+
                 if (formIndex >= 0) {
                   var lastField = container.lastElementChild;
                   container.removeChild(lastField);
                   totalFormsInput.value = formIndex;
                 }
               }
-            </script>
+              </script>    
             
           {% else %}
               <p>Статус неизвестен</p>

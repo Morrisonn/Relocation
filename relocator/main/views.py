@@ -231,12 +231,14 @@ def hr_userPage(request, userId):
     personal_info = Personal_Info.objects.filter(user_id=userId)
     user_application = Application.objects.filter(user_id=userId)
     user_application_len = len(user_application)
+    notes = Interview.objects.filter(application_id = user_application.first().id)
     if user_application_len == 0:
         status = None
     else:
         status = user_application.first().status
     # personal_info_len = len(Personal_Info.objects.filter(user_id=userId))
     form = None
+    formset = None
     if request.method == 'POST':
         if user_application.first().status == "first":
             form = InterviewLinkForm(request.POST)
@@ -261,11 +263,6 @@ HR готов провести собеседование.
         elif user_application.first().status == "second":
             form = InterviewNotesForm(request.POST)
             if form.is_valid():
-                # form.cleaned_data["application_id"] = user_application.first().id
-                # Interview.objects.create(**form.cleaned_data)
-                # application = user_application.first()
-                # application.status = "second"
-                # application.save()
                 application = user_application.first()
                 interview = Interview.objects.get(application=application)
                 interview.notes = form.cleaned_data['notes']
@@ -274,11 +271,11 @@ HR готов провести собеседование.
                 application.save()
                 return redirect(request.path)
         elif user_application.first().status == "third":
-                # CheckListFormSet = formset_factory(CheckListForm, extra=1)
+                CheckListFormSet = formset_factory(CheckListForm, extra=1)
                 formset = CheckListFormSet(request.POST, prefix='checklist')
                 print("***********************", formset)
                 if formset.is_valid():
-                    for form in formset:
+                    for i, form in enumerate(formset):
                         if form.has_changed():
                             check_list = form.save(commit=False)
                             check_list.application = user_application.first()
@@ -311,6 +308,7 @@ HR готов провести собеседование.
             "personal_info": personal_info,
             "user_application": user_application.first(),
             "status" : status,
+            "notes" : notes,
             "form": form,
             "formset": formset,
             # "formset": formset if user_application.first().status == "third" else None,
@@ -320,7 +318,6 @@ HR готов провести собеседование.
 
 def hr_userProfile(request, userId):
     personal_info = Personal_Info.objects.filter(user_id=userId)
-    print("**********", personal_info)
     return render(
         request, 
         "main/hr/userProfile.html", 

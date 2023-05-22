@@ -106,7 +106,7 @@ class Interview(models.Model):
     datetime = models.DateTimeField(null=True)
 
     def __str__(self):
-        return f"Interview ({self.id})"
+        return f"Interview ({self.id}, {self.notes})"
 
 
 class Review(models.Model):

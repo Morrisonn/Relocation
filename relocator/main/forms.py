@@ -48,7 +48,7 @@ class CheckListForm(forms.ModelForm):
         model = Check_list
         fields = ['name', 'status']
         labels = {
-            'name': 'Список документов',
+            'name': '',
         }
         label_suffix = 'л'
 # class CreateApplication(forms.Form):
