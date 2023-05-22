@@ -25,6 +25,7 @@
 			<ul id="mainmenu" class="mainmenu">
 			<li class="logo"><a href=#><div class="logo"></div></a></li>
 			<li><a href="{% url 'hrApplications' %}">Заявки</a></li>
+			<li><a href="{% url 'hrNews' %}">Новости</a></li>
 			<li class="last"><a href="{% url 'logout_view' %}">Выход</a></li>
 			{% if user.is_authenticated %}
 				{% if not user.first_name %}
@@ -42,7 +43,11 @@
 	<div class="content-div">
 		{% block applications %}
 		{% endblock %}
+		
 		{% block userPage %}
+		{% endblock %}
+
+		{% block news %}
 		{% endblock %}
 	</div>
 	

@@ -103,6 +103,7 @@ class Interview(models.Model):
     notes = models.TextField()
     link = models.URLField()
     application = models.ForeignKey("Application", on_delete=models.CASCADE)
+    datetime = models.DateTimeField(null=True)
 
     def __str__(self):
         return f"Interview ({self.id})"

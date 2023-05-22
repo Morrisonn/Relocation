@@ -137,3 +137,11 @@ AUTH_USER_MODEL = "main.User"
 YANDEX_MAPS_API_KEY = "ваш API-ключ"
 
 LOGOUT_REDIRECT_URL = 'http://127.0.0.1:8000/autorization/login/Й'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # SMTP-сервер, например, smtp.gmail.com
+EMAIL_PORT = 587  # Порт SMTP-сервера, обычно 587
+EMAIL_HOST_USER = 'mixasa.mk@gmail.com'  # Ваш электронный адрес
+EMAIL_HOST_PASSWORD = 'auwoudwxbompobri'  # Ваш пароль
+EMAIL_USE_TLS = True  # Использовать TLS для безопасного соединения
+DEFAULT_FROM_EMAIL = 'mixasa.mk@gmail.com'  # Электронный адрес отправителя по умолчанию

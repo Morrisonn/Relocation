@@ -25,7 +25,30 @@ class AddProfileForm(forms.Form):
     email = forms.EmailField(label="email")
     phone_number = forms.CharField(max_length=20, label="Номер телефона")
 
-class AddProfileForm(forms.Form):
-    first_name = forms.CharField(max_length=50, label="Пометки")
-    
+class InterviewLinkForm(forms.ModelForm):
+    class Meta:
+        model = Interview
+        fields = ['link', 'datetime']
+        widgets = {
+            'datetime': forms.DateTimeInput(attrs={'type': 'datetime-local'})
+        }
+        labels = {'link': 'Ссылка на собеседование', 'datetime':'Дата и время собеседования:'}
+
+class InterviewNotesForm(forms.ModelForm):
+    notes = forms.CharField(widget=forms.Textarea)
+    class Meta:
+        model = Interview
+        fields = ['notes']
+        labels = {'notes': 'Заметки'}    
+
+class CheckListForm(forms.ModelForm):
+    status = forms.BooleanField(initial=False, widget=forms.HiddenInput(), required=False)
+
+    class Meta:
+        model = Check_list
+        fields = ['name', 'status']
+        labels = {
+            'name': 'Список документов',
+        }
+        label_suffix = 'л'
 # class CreateApplication(forms.Form):

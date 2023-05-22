@@ -6,11 +6,14 @@ from relocator import settings
 from .models import *
 from .forms import *
 from django.db.models import Q
+from django.core.mail import send_mail
+from django.forms import formset_factory
 
 
 def logout_view(request):
     logout(request)
     return redirect("login")
+
 
 
 def user(request):
@@ -71,11 +74,13 @@ def userApplication(request):
     new_username = Personal_Info.objects.filter(user_id=request.user.id)
     new_username_len = len(new_username)
     locations = Location.objects.all()
+    interview = Interview.objects.filter(application_id = user_application.first().id)
+    link = interview.first().link
+    datetime = interview.first().datetime
 
-    print("==>", user_application)
-    print("==>", user_application_len)
-    print("==>", locations)
-
+    # print("==>", user_application)
+    # print("==>", user_application_len)
+    # print("==>", locations)
 
     # print(f"smh {request} {request.POST}")
     # selected_location_id = int(request.POST.get('selected_location'))
@@ -95,6 +100,8 @@ def userApplication(request):
             "user_application_len": user_application_len,
             "locations": locations,
             "status": status,
+            "link" : link,
+            "datetime" : datetime,
         },
     )
 
@@ -229,6 +236,68 @@ def hr_userPage(request, userId):
     else:
         status = user_application.first().status
     # personal_info_len = len(Personal_Info.objects.filter(user_id=userId))
+    form = None
+    CheckListFormSet = formset_factory(CheckListForm, extra=1)
+    if request.method == 'POST':
+        if user_application.first().status == "first":
+            form = InterviewLinkForm(request.POST)
+            if form.is_valid():
+                link = form.cleaned_data['link']
+                time = form.cleaned_data['datetime']
+                datetime = timezone.localtime(time)  
+                formatted_datetime = datetime.strftime('%Y-%m-%d %H:%M')
+                message = f"""Здравствуйте {personal_info.first().first_name}!
+HR готов провести собеседование.
+Оно состоится {formatted_datetime}
+Ссылка:
+{link}"""
+                send_mail('Собеседование', message, 'mixasa.mk@gmail.com', ['mixasa.mk@gmail.com'])
+                form.cleaned_data["application_id"] = user_application.first().id
+                print("8888888888", form.cleaned_data, user_application)
+                Interview.objects.create(**form.cleaned_data)
+                application = user_application.first()
+                application.status = "second"
+                application.save()
+                return redirect(request.path)
+        elif user_application.first().status == "second":
+            form = InterviewNotesForm(request.POST)
+            if form.is_valid():
+                # form.cleaned_data["application_id"] = user_application.first().id
+                # Interview.objects.create(**form.cleaned_data)
+                # application = user_application.first()
+                # application.status = "second"
+                # application.save()
+                application = user_application.first()
+                interview = Interview.objects.get(application=application)
+                interview.notes = form.cleaned_data['notes']
+                interview.save()
+                application.status = "third"
+                application.save()
+                return redirect(request.path)
+        elif user_application.first().status == "third":
+                formset = CheckListFormSet(request.POST, prefix='checklist')
+                print("**********************************", formset)
+                if formset.is_valid():
+                    print("**********************************")
+                    for form in formset:
+                        if form.has_changed():
+                            form.cleaned_data['status'] = False  # Установка значения status
+                            form.fields['status'].widget = forms.HiddenInput()
+                            check_list = form.save(commit=False)
+                            check_list.application = user_application.first()
+                            check_list.save()
+                    return redirect(request.path)
+        elif user_application.first().status == "third":
+            formset = CheckListFormSet(prefix='checklist', initial=[{'name': ''}])
+    else:
+        if user_application.first().status == "first":
+            form = InterviewLinkForm()
+        elif user_application.first().status == "second":
+            form = InterviewNotesForm()
+        elif user_application.first().status == "third":
+            CheckListFormSet = formset_factory(CheckListForm, extra=1)
+            formset = CheckListFormSet(prefix='checklist')
+    iid = Application.objects.filter(user_id = userId) 
     return render(
         request, 
         "main/hr/userPage.html", 
@@ -237,6 +306,23 @@ def hr_userPage(request, userId):
             "personal_info": personal_info,
             "user_application": user_application.first(),
             "status" : status,
+            "form": form,
+            'formset': formset,
         }
     )
     # return HttpResponse(f"Заявка на релокацию номер {appid}")
+
+
+def hrNews(request):
+    new_username = Personal_Info.objects.filter(user_id=request.user.id)
+    new_username_len = len(new_username)
+    news_content = News.objects.all()
+    return render(
+        request,
+        "main/hr/news.html",
+        {
+            "new_username": new_username.first(),
+            "new_username_len": new_username_len,
+            "news_content" : news_content,
+        },
+    )

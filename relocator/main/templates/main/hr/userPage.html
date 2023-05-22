@@ -24,8 +24,8 @@
         height: 633px;
     
         .nav-item{
-            margin-left: 160px;
-            margin-right: 160px;
+          margin-left: 100px;
+            margin-right: 100px;
             margin-top: 15px;
             pointer-events: none;
         }
@@ -105,6 +105,9 @@
 			  <li class="nav-item" role="presentation">
 				<a class="nav-link" id="pills-step3-tab" data-toggle="pill" href="#pills-step3" role="tab" aria-controls="pills-step3" aria-selected="false">3</a>
 			  </li>
+        <li class="nav-item" role="presentation">
+          <a class="nav-link" id="pills-step4-tab" data-toggle="pill" href="#pills-step3" role="tab" aria-controls="pills-step3" aria-selected="false">4</a>
+        </li>
 			</ul>
 			<div class="progress mb-3">
 			  <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
@@ -124,8 +127,8 @@
 		</div>
     <p>1. Заявка отправлена</p>
     <p>2. Назначено собеседование</p>
-    <p>3. Собеседование пройдено</p>
-    <p>4. Собеседование пройдено</p>
+    <p>3. Собеседование пройдено. Ожидание документов</p>
+    <p>4. Релокация завершена</p>
 	  </div>
 
     <script>
@@ -134,22 +137,27 @@
 		var progressBar = document.querySelector(".progress-bar");
 		
 		if (status == "first") {
-			progressBar.style.width = "33%";
-			progressBar.setAttribute("aria-valuenow", "33" );
+			progressBar.style.width = "25%";
+			progressBar.setAttribute("aria-valuenow", "25" );
 			document.querySelector("#pills-step1-tab").classList.add("active");
 		} else if (status == "second") {
-			progressBar.style.width = "66%";
-			progressBar.setAttribute("aria-valuenow", "66");
+			progressBar.style.width = "50%";
+			progressBar.setAttribute("aria-valuenow", "50");
 			document.querySelector("#pills-step2-tab").classList.add("active");
 		} else if (status == "third") {
+			progressBar.style.width = "75%";
+			progressBar.setAttribute("aria-valuenow", "75");
+			document.querySelector("#pills-step3-tab").classList.add("active");
+		}
+    else if (status == "fourt") {
 			progressBar.style.width = "100%";
 			progressBar.setAttribute("aria-valuenow", "100");
-			document.querySelector("#pills-step3-tab").classList.add("active");
+			document.querySelector("#pills-step4-tab").classList.add("active");
 		}
 		});
 	  </script>
         <div>
-          {% if user_application.status == "first" %}
+          {% if user_application.status == "first" or user_application.status == "second" %}
             <script src="https://meet.jit.si/external_api.js"></script>
             <div id="jitsi-container" style="margin-top: 30px; margin-right: 30px;"></div>
             <script>
@@ -212,18 +220,74 @@
               };
               const api = new JitsiMeetExternalAPI(domain, options);
             </script> -->
-            <form action="{% url 'hr_userPage' %}" method="POST">
-              {% csrf_token %}
-              <div class="form-group">
-                <label for="notes">Пометка</label>
-                <textarea class="form-control" id="notes" name="notes" rows="3"></textarea>
-              </div>
-              <button type="submit" class="btn btn-primary">Добавить пометку</button>
-            </form>
-          {% elif user_application.status == "second" %}
-              <p>Второй</p>
+            {% if user_application.status == "first" %}
+              <form method="post" class="first_form" style="text-align: center; margin-top: 10px;">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="form-group">
+                  <button type="submit" class="btn btn-primary" style="width: 410px; margin-top: 10px;">Сохранить</button>
+                </div>
+              </form>
+            {% elif user_application.status == "second" %}
+              <form method="post" class="first_form" style="text-align: center; margin-top: 10px;">
+                {% csrf_token %}
+                {% for field in form %}
+                  {{ field }}
+                {% endfor %}
+                <div class="form-group">
+                  <button type="submit" class="btn btn-primary" style="width: 410px; margin-top: 10px;">Завершить собеседование</button>
+                </div>
+              </form>
+            {% endif %}
           {% elif user_application.status == "third" %}
-              <p>Третий</p>
+            <!-- <form method="post" class="checklist-form" style="text-align: center; margin-top: 10px;">
+                {% csrf_token %}
+                {% for form in formset %}
+                    {{ form.as_p }}
+                {% endfor %}
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary" style="width: 200px; margin-top: 10px;">Сохранить</button>
+                </div>
+            </form> -->
+            <form method="post" class="checklist-form" style="text-align: center; margin-top: 10px;">
+              {% csrf_token %}
+              {{ formset.management_form }}
+              <div id="input-container">
+                  {% for form in formset %}
+                      {{ form.as_p }}
+                  {% endfor %}
+              </div>
+              <div class="form-group">
+                  <button type="button" onclick="removeInputField()" class="btn btn-danger btn-sm" style="width: 30px; padding: 0;"><i class="fas fa-minus">-</i></button>
+                  <button type="button" onclick="addInputField()" class="btn btn-success btn-sm" style="margin-right: 5px; width: 30px; padding: 0;"><i class="fas fa-plus">+</i></button>
+              </div>
+              <div class="form-group">
+                  <button type="submit" class="btn btn-primary" style="width: 200px; margin-top: 10px;">Сохранить</button>
+              </div>
+            </form>
+          
+            <script>
+              function addInputField() {
+                  var container = document.getElementById("input-container");
+                  var inputs = container.getElementsByTagName("input");
+          
+                  // Создаем копию первого поля для ввода
+                  var clonedInput = inputs[0].cloneNode(true);
+          
+                  // Очищаем значение скопированного поля
+                  clonedInput.value = "";
+          
+                  container.appendChild(clonedInput);
+              }
+          
+              function removeInputField() {
+                  var container = document.getElementById("input-container");
+                  var inputs = container.getElementsByTagName("input");
+                  if (inputs.length > 0) {
+                      container.removeChild(inputs[inputs.length - 1]);
+                  }
+              }
+          </script>
           {% else %}
               <p>Статус неизвестен</p>
           {% endif %}

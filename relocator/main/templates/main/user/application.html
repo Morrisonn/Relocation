@@ -13,43 +13,47 @@
   }
 </style>
 
-<div class="template-div" >
-    {% if user_application_len != 0 %}
+<!-- <div class="template-div" > -->
+  <div>
+    {% if user_application_len == 0 %}
         <!-- <button type="submit" class="btn btn-primary">создать заявку на релокацию</button> -->
         <br>
-            <form method="post" action="{% url 'newUserApplication' %}">
-            {% csrf_token %}
-                <table class="table table-hover" style="width: 100%;">
-                    <thead>
-                        <tr>
-                            <th>Выбор</th>
-                            <th>Страна</th>
-                            <th>Город</th>
-                            <th>Описание</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for location in locations %}
+            <div>
+              <form method="post" action="{% url 'newUserApplication' %}">
+                {% csrf_token %}
+                    <table class="table table-hover" style="width: 100%; ">
+                        <thead>
                             <tr>
-                                <td>
-                                    <input type="radio" name="selected_location" value="{{ location.id }}" onclick="" onchange="updatePlacemark([{{location.latitude}}, {{location.longitude}}])">
-                                </td>
-                                <td>{{ location.country }}</td>
-                                <td>{{ location.city }}</td>
-                                <td>{{ location.description }}</td>
-                                <!-- <td>{{ location.latitude }}</td>
-                                <td>{{ location.longitude }}</td> -->
+                                <th>Выбор</th>
+                                <th>Страна</th>
+                                <th>Город</th>
+                                <th>Описание</th>
                             </tr>
-                        {% endfor %}
-                    </tbody>
-                    <tbody>
-                        
-                    </tbody>
-                </table>
-                <button type="submit" class="btn btn-primary">Подтвердить</button>
-            </form>
-            
-            <div id="map" style="width: 100%; height: 500px"></div>
+                        </thead>
+                        <tbody>
+                            {% for location in locations %}
+                                <tr>
+                                    <td>
+                                        <input type="radio" name="selected_location" value="{{ location.id }}" onclick="" onchange="updatePlacemark([{{location.latitude}}, {{location.longitude}}])">
+                                    </td>
+                                    <td>{{ location.country }}</td>
+                                    <td>{{ location.city }}</td>
+                                    <td>{{ location.description }}</td>
+                                    <!-- <td>{{ location.latitude }}</td>
+                                    <td>{{ location.longitude }}</td> -->
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tbody>
+                            
+                        </tbody>
+                    </table>
+                    <button type="submit" class="btn btn-primary" style="">Подтвердить</button>
+                </form>
+            </div>
+            <div class="d-flex justify-content-center align-items-center" style="width: 100%; height: 500px; margin-top: 0;">
+              <div id="map" style="width: 50%; height: 50%; position: absolute; top:300px"></div>
+            </div>
 
             <script src="https://api-maps.yandex.ru/2.1/?apikey=1c863c16-81b2-4b8f-be71-2007755b1fca&lang=ru_RU" type="text/javascript"></script>        
             <script type="text/javascript">
@@ -63,7 +67,7 @@
                 ymaps.ready(function () {
                     var myMap = new ymaps.Map('map', {
                             center: [53.90, 27.56],
-                            zoom: 10
+                            zoom: 5.5
                         }, {
                             searchControlProvider: 'yandex#search'
                         });
@@ -92,8 +96,8 @@
         height: 633px;
     
         .nav-item{
-            margin-left: 160px;
-            margin-right: 160px;
+            margin-left: 100px;
+            margin-right: 100px;
             margin-top: 15px;
             pointer-events: none;
         }
@@ -126,6 +130,9 @@
 			  <li class="nav-item" role="presentation">
 				<a class="nav-link" id="pills-step3-tab" data-toggle="pill" href="#pills-step3" role="tab" aria-controls="pills-step3" aria-selected="false">3</a>
 			  </li>
+        <li class="nav-item" role="presentation">
+          <a class="nav-link" id="pills-step4-tab" data-toggle="pill" href="#pills-step3" role="tab" aria-controls="pills-step3" aria-selected="false">4</a>
+        </li>
 			</ul>
 			<div class="progress mb-3">
 			  <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
@@ -143,7 +150,7 @@
 			</div>
 		  </div>
 		</div>
-    <p>1. Заявка отправлена</p>
+    <p>1. Ваша заявка отправлена, ожидайте ответа HR</p>
     <p>2. Заявка отправлена</p>
     <p>3. Заявка отправлена</p>
 	  </div>
@@ -154,25 +161,36 @@
 		var progressBar = document.querySelector(".progress-bar");
 		
 		if (status == "first") {
-			progressBar.style.width = "33%";
-			progressBar.setAttribute("aria-valuenow", "33" );
+			progressBar.style.width = "25%";
+			progressBar.setAttribute("aria-valuenow", "25" );
 			document.querySelector("#pills-step1-tab").classList.add("active");
 		} else if (status == "second") {
-			progressBar.style.width = "66%";
-			progressBar.setAttribute("aria-valuenow", "66");
+			progressBar.style.width = "50%";
+			progressBar.setAttribute("aria-valuenow", "50");
 			document.querySelector("#pills-step2-tab").classList.add("active");
 		} else if (status == "third") {
+			progressBar.style.width = "75%";
+			progressBar.setAttribute("aria-valuenow", "75");
+			document.querySelector("#pills-step3-tab").classList.add("active");
+		}
+    else if (status == "fourt") {
 			progressBar.style.width = "100%";
 			progressBar.setAttribute("aria-valuenow", "100");
-			document.querySelector("#pills-step3-tab").classList.add("active");
+			document.querySelector("#pills-step4-tab").classList.add("active");
 		}
 		});
 	  </script>
         <div>
           {% if user_application.status == "first" %}
-            <h1>Ваша заявка отправлена, ожидайте ответа HR</h1>
+            <!-- <h1>Ваша заявка отправлена, ожидайте ответа HR</h1> -->
+            <h1>Собеседование:</h1>
+            <a href="https://meet.jit.si/%D0%A1%D0%BE%D1%84%D0%B8%D1%8F-meeting-1684602277738-9208">Собеседование</a>
           {% elif user_application.status == "second" %}
-              <p>Второй</p>
+          <div style="margin-left: 213px; margin-top: 20px;">
+            <p>Собеседование состоится {{datetime}}</p>
+              <p>Ссылка на собеседование:</p>
+              <a href="{{link}}">{{link}}</a>
+          </div>
           {% elif user_application.status == "third" %}
               <p>Третий</p>
           {% else %}
