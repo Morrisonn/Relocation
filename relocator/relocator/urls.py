@@ -29,6 +29,7 @@ urlpatterns = [
     path("hr/applications/", hrApplications, name="hrApplications"),
     path("hr/applications/userPage/<int:userId>/", hr_userPage, name="hr_userPage"),
     path("hr/news/", hrNews, name="hrNews"),
+    path("hr/applications/userPage/<int:userId>/profile/", hr_userProfile, name="hr_userProfile"),
     # Возможно нужно изменить отображение по id (тип int) -- урок 3 5:00
     # path("hr/employeeProfile/<int:appid>/", hrEmployeeProfile),
 ]

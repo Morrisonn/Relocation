@@ -1,0 +1,72 @@
+{% extends 'main/hr/base.html' %}
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% block profile %}
+<link rel="stylesheet" href="https://bootstraptema.ru/plugins/2015/bootstrap3/bootstrap.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+<script src="https://bootstraptema.ru/plugins/jquery/jquery-1.11.3.min.js"></script>
+<script src="https://bootstraptema.ru/plugins/2015/b-v3-3-6/bootstrap.min.js"></script>
+<style>
+    #btn1 a {
+        background-color: #337ab7 !important;
+        color: white;
+        margin-left: 707px;
+    }
+    h4{
+        text-align: center;
+    }
+    .alert.alert-info {
+    color: #fff;
+    background-color: #fff;
+    border-color: #fff;
+    }
+    
+</style>
+    <div style="margin-left: 100px !important; margin-right: 100px;">
+      <div id="myTabContent" class="tab-content" >
+        <hr>
+        <h3 id="employee_profile">Профиль сотрудника</h3>
+        <table class="table">
+        <tbody>
+        <tr><td class="active">Имя:</td><td>{{personal_info.0.first_name}}</td></tr>
+        <tr><td class="active">Фамилия:</td><td>{{personal_info.0.last_name}}</td></tr>
+        <tr><td class="active">Отчество:</td><td>{{personal_info.0.middle_name}}</td></tr>
+        <tr><td class="active">Пол:</td><td>
+            
+            {% if personal_info.0.gender == "male" %}
+                мужской
+            {% else %}
+                женский
+            {%endif%}
+            </td></tr>
+        <tr><td class="active">Дата рождения:</td><td>{{personal_info.0.date_of_birth}}</td></tr>
+        <tr><td class="active">Стаж работы:</td><td>{{personal_info.0.work_experience}}</td></tr>
+        <tr><td class="active">Доджность:</td><td>{{personal_info.0.position}}</td></tr>
+        <tr><td class="active">Ставка:</td><td>{{personal_info.0.rate}}</td></tr>
+        <tr><td class="active">Адрес электронной почты:</td><td>{{personal_info.0.email}}</td></tr>
+        <tr><td class="active">Номер телефона:</td><td>{{personal_info.0.phone_number}}</td></tr>
+        </tbody>
+        </table>
+        <div class="tab-pane fade" id="contact">
+        <p></p>
+        </div>
+      </div>
+    </div>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

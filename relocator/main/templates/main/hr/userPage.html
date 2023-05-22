@@ -5,7 +5,9 @@
 {% bootstrap_javascript %}
 {% block userPage %}
 
-<div class="template-div">
+<div class="template-div" style="width: 100%;
+display: flex;
+flex-direction: column;">
 
     <style>
         #employee_profile{
@@ -42,56 +44,12 @@
         .progress {
         position: relative;
         }
+        .status-p{
+          width: 80%;
+        }
     }
     </style>
-
-    <!-- <style>
-        
-        h4{
-            text-align: center;
-        }
-        .alert.alert-info {
-        color: #fff;
-        background-color: #fff;
-        border-color: #fff;
-        }
-        
-    </style> -->
-    <div style="width: 300px !important; height: 200px !important;">
-      <div id="myTabContent" class="tab-content" >
-        <hr>
-        <!-- <div class="tab-pane fade active in" id="detail"> -->
-        <h3 id="employee_profile">Профиль сотрудника</h3>
-        <table class="table">
-        <tbody>
-        <tr><td class="active">Имя:</td><td>{{personal_info.0.first_name}}</td></tr>
-        <tr><td class="active">Фамилия:</td><td>{{personal_info.0.last_name}}</td></tr>
-        <tr><td class="active">Отчество:</td><td>{{personal_info.0.middle_name}}</td></tr>
-        <tr><td class="active">Пол:</td><td>
-            
-            {% if personal_info.0.gender == "male" %}
-                мужской
-            {% else %}
-                женский
-            {%endif%}
-            </td></tr>
-        <tr><td class="active">Дата рождения:</td><td>{{personal_info.0.date_of_birth}}</td></tr>
-        <tr><td class="active">Стаж работы:</td><td>{{personal_info.0.work_experience}}</td></tr>
-        <tr><td class="active">Доджность:</td><td>{{personal_info.0.position}}</td></tr>
-        <tr><td class="active">Ставка:</td><td>{{personal_info.0.rate}}</td></tr>
-        <tr><td class="active">Адрес электронной почты:</td><td>{{personal_info.0.email}}</td></tr>
-        <tr><td class="active">Номер телефона:</td><td>{{personal_info.0.phone_number}}</td></tr>
-        </tbody>
-        </table>
-        <!-- <ul id="myTab" class="nav nav-pills">
-            <li id="btn1"><a href="#contact" data-toggle="tab">Редактировать</a></li>
-        </ul> -->
-        <!-- </div> -->
-        <div class="tab-pane fade" id="contact">
-        <p></p>
-        </div>
-      </div>
-    </div>
+    
     <div class="container">
 		<div class="row">
 		  <div class="col-md-12" >
@@ -125,10 +83,13 @@
 			</div>
 		  </div>
 		</div>
-    <p>1. Заявка отправлена</p>
-    <p>2. Назначено собеседование</p>
-    <p>3. Собеседование пройдено. Ожидание документов</p>
-    <p>4. Релокация завершена</p>
+    <div>
+      <p class="status-p">1. Заявка отправлена</p>
+      <p class="status-p">2. Назначено собеседование</p>
+      <p class="status-p">3. Собеседование пройдено. Ожидание документов</p>
+      <p class="status-p">4. Релокация завершена</p>
+    </div >
+      <button style="position: absolute; top:180px; left: 1140px;" class="btn btn-primary" onclick="window.location.href='{% url 'hr_userProfile' userId=userId %}'">Профиль сотрудника</button>
 	  </div>
 
     <script>
@@ -156,7 +117,7 @@
 		}
 		});
 	  </script>
-        <div>
+        <div style="position: absolute; top:220px; left: 210px;" >
           {% if user_application.status == "first" or user_application.status == "second" %}
             <script src="https://meet.jit.si/external_api.js"></script>
             <div id="jitsi-container" style="margin-top: 30px; margin-right: 30px;"></div>
@@ -166,7 +127,7 @@
               const options = {
                 roomName: generateUniqueRoomName(),
                 width: 800,
-                height: 500,
+                height: 420,
                 parentNode: document.querySelector('#jitsi-container'),
                 configOverwrite: {
                   defaultLanguage: 'ru',
@@ -221,6 +182,16 @@
               const api = new JitsiMeetExternalAPI(domain, options);
             </script> -->
             {% if user_application.status == "first" %}
+            <style>
+              input{
+                margin-top: 10px;
+                width: 180px
+              }
+              label{
+                width: 300px;
+              }
+            </style>
+            <div style="position: absolute; top:15px; left: 840px;">
               <form method="post" class="first_form" style="text-align: center; margin-top: 10px;">
                 {% csrf_token %}
                 {{ form.as_p }}
@@ -228,66 +199,85 @@
                   <button type="submit" class="btn btn-primary" style="width: 410px; margin-top: 10px;">Сохранить</button>
                 </div>
               </form>
+            </div>  
             {% elif user_application.status == "second" %}
+            <div style="position: absolute; top:20px; left: 820px;">
               <form method="post" class="first_form" style="text-align: center; margin-top: 10px;">
                 {% csrf_token %}
                 {% for field in form %}
                   {{ field }}
                 {% endfor %}
                 <div class="form-group">
-                  <button type="submit" class="btn btn-primary" style="width: 410px; margin-top: 10px;">Завершить собеседование</button>
+                  <button type="submit" class="btn btn-primary" style="width: 345px; margin-top: 10px;">Завершить собеседование</button>
                 </div>
               </form>
+            </div>
             {% endif %}
           {% elif user_application.status == "third" %}
-            <!-- <form method="post" class="checklist-form" style="text-align: center; margin-top: 10px;">
-                {% csrf_token %}
-                {% for form in formset %}
-                    {{ form.as_p }}
-                {% endfor %}
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary" style="width: 200px; margin-top: 10px;">Сохранить</button>
-                </div>
-            </form> -->
+          <div style="position: absolute; top:20px; left: 0px; margin-top: 50px;">
             <form method="post" class="checklist-form" style="text-align: center; margin-top: 10px;">
               {% csrf_token %}
               {{ formset.management_form }}
               <div id="input-container">
-                  {% for form in formset %}
-                      {{ form.as_p }}
-                  {% endfor %}
+                {% for form in formset %}
+                  {{ form.as_p }}
+                {% endfor %}
               </div>
               <div class="form-group">
-                  <button type="button" onclick="removeInputField()" class="btn btn-danger btn-sm" style="width: 30px; padding: 0;"><i class="fas fa-minus">-</i></button>
-                  <button type="button" onclick="addInputField()" class="btn btn-success btn-sm" style="margin-right: 5px; width: 30px; padding: 0;"><i class="fas fa-plus">+</i></button>
-              </div>
+                <button type="button" onclick="removeInputField()" class="btn btn-danger btn-sm" style="margin-right: 5px; width: 100px; padding: 0;"><i class="fas fa-minus">-</i></button>
+                <button type="button" onclick="addInputField()" class="btn btn-success btn-sm" style="width: 100px; padding: 0;"><i class="fas fa-plus">+</i></button>
+              </div>              
               <div class="form-group">
-                  <button type="submit" class="btn btn-primary" style="width: 200px; margin-top: 10px;">Сохранить</button>
+                <button type="submit" class="btn btn-primary" style="width: 200px; margin-top: 10px;">Сохранить</button>
               </div>
             </form>
-          
+          </div>
+            
             <script>
+              var formsetPrefix = "{{ formset.prefix }}";
+              var totalFormsInput = document.querySelector('#id_' + formsetPrefix + '-TOTAL_FORMS');
+            
               function addInputField() {
-                  var container = document.getElementById("input-container");
-                  var inputs = container.getElementsByTagName("input");
-          
-                  // Создаем копию первого поля для ввода
-                  var clonedInput = inputs[0].cloneNode(true);
-          
-                  // Очищаем значение скопированного поля
-                  clonedInput.value = "";
-          
-                  container.appendChild(clonedInput);
+                var container = document.getElementById("input-container");
+                var formIndex = parseInt(totalFormsInput.value);
+
+                var fieldHtml = `
+                  <div class="form-row">
+                    <div class="form-group">
+                      <input type="text" name="${formsetPrefix}-${formIndex}-field" id="id_${formsetPrefix}-${formIndex}-field">
+                    </div>
+                  </div>
+                `;
+
+                container.insertAdjacentHTML('beforeend', fieldHtml);
+                totalFormsInput.value = formIndex + 1;
+                
+                // Сохранение значения в локальном хранилище браузера
+                var addedField = container.querySelector(`#id_${formsetPrefix}-${formIndex}-field`);
+                addedField.addEventListener('input', function() {
+                  localStorage.setItem(this.name, this.value);
+                });
+
+                // Установка сохраненного значения (если есть) в поле формы
+                var savedValue = localStorage.getItem(`${formsetPrefix}-${formIndex}-field`);
+                if (savedValue) {
+                  addedField.value = savedValue;
+                }
               }
-          
+
+            
               function removeInputField() {
-                  var container = document.getElementById("input-container");
-                  var inputs = container.getElementsByTagName("input");
-                  if (inputs.length > 0) {
-                      container.removeChild(inputs[inputs.length - 1]);
-                  }
+                var container = document.getElementById("input-container");
+                var formIndex = parseInt(totalFormsInput.value) - 1;
+            
+                if (formIndex >= 0) {
+                  var lastField = container.lastElementChild;
+                  container.removeChild(lastField);
+                  totalFormsInput.value = formIndex;
+                }
               }
-          </script>
+            </script>
+            
           {% else %}
               <p>Статус неизвестен</p>
           {% endif %}

@@ -42,41 +42,43 @@
         {% else %}
         <div class="template-div">
         </div>    
-        
+        <div style="margin-left: 100px !important; margin-right: 100px;">
             <div id="myTabContent" class="tab-content">
-           <hr>
-            <div class="tab-pane fade active in" id="detail">
-            <h4>Ваш профиль</h4>
-            <table class="table table-th-block">
-            <tbody>
-            <tr><td class="active">Имя:</td><td>{{personal_info.0.first_name}}</td></tr>
-            <tr><td class="active">Фамилия:</td><td>{{personal_info.0.last_name}}</td></tr>
-            <tr><td class="active">Отчество:</td><td>{{personal_info.0.middle_name}}</td></tr>
-            <tr><td class="active">Пол:</td><td>
-                
-                {% if personal_info.0.gender == "male" %}
-                    мужской
-                {% else %}
-                    женский
-                {%endif%}
-                </td></tr>
-            <tr><td class="active">Дата рождения:</td><td>{{personal_info.0.date_of_birth}}</td></tr>
-            <tr><td class="active">Стаж работы:</td><td>{{personal_info.0.work_experience}}</td></tr>
-            <tr><td class="active">Доджность:</td><td>{{personal_info.0.position}}</td></tr>
-            <tr><td class="active">Ставка:</td><td>{{personal_info.0.rate}}</td></tr>
-            <tr><td class="active">Адрес электронной почты:</td><td>{{personal_info.0.email}}</td></tr>
-            <tr><td class="active">Номер телефона:</td><td>{{personal_info.0.phone_number}}</td></tr>
-            </tbody>
-            </table>
-            <ul id="myTab" class="nav nav-pills">
-                <li id="btn1"><a href="#contact" data-toggle="tab">Редактировать</a></li>
-            </ul>
+                <hr>
+                 <div class="tab-pane fade active in" id="detail">
+                 <h4>Ваш профиль</h4>
+                 <table class="table table-th-block">
+                 <tbody>
+                 <tr><td class="active">Имя:</td><td>{{personal_info.0.first_name}}</td></tr>
+                 <tr><td class="active">Фамилия:</td><td>{{personal_info.0.last_name}}</td></tr>
+                 <tr><td class="active">Отчество:</td><td>{{personal_info.0.middle_name}}</td></tr>
+                 <tr><td class="active">Пол:</td><td>
+                     
+                     {% if personal_info.0.gender == "male" %}
+                         мужской
+                     {% else %}
+                         женский
+                     {%endif%}
+                     </td></tr>
+                 <tr><td class="active">Дата рождения:</td><td>{{personal_info.0.date_of_birth}}</td></tr>
+                 <tr><td class="active">Стаж работы:</td><td>{{personal_info.0.work_experience}}</td></tr>
+                 <tr><td class="active">Доджность:</td><td>{{personal_info.0.position}}</td></tr>
+                 <tr><td class="active">Ставка:</td><td>{{personal_info.0.rate}}</td></tr>
+                 <tr><td class="active">Адрес электронной почты:</td><td>{{personal_info.0.email}}</td></tr>
+                 <tr><td class="active">Номер телефона:</td><td>{{personal_info.0.phone_number}}</td></tr>
+                 </tbody>
+                 </table>
+                 <!-- <ul id="myTab" class="nav nav-pills">
+                     <li id="btn1"><a href="#contact" data-toggle="tab">Редактировать</a></li>
+                 </ul> -->
+                 </div>
+                 <div class="tab-pane fade" id="contact">
+                 <p></p>
+                 </div>
             </div>
-            <div class="tab-pane fade" id="contact">
-            <p></p>
-            </div>
-            </div>
+        </div>
             
+<!--             
             <div class="tab-pane fade" id="contact">
                 <p></p>
                 <form role="form">
@@ -108,7 +110,7 @@
                 <button type="submit" class="btn btn-success" data-original-title="" title="">Отправить</button>
                 </div>
                 </form>
-            </div>
+            </div> -->
         {% endif %} 
 
         <!-- <link rel="stylesheet" href="https://bootstraptema.ru/plugins/2015/bootstrap3/bootstrap.min.css" />

@@ -182,15 +182,15 @@
 	  </script>
         <div>
           {% if user_application.status == "first" %}
-            <!-- <h1>Ваша заявка отправлена, ожидайте ответа HR</h1> -->
-            <h1>Собеседование:</h1>
-            <a href="https://meet.jit.si/%D0%A1%D0%BE%D1%84%D0%B8%D1%8F-meeting-1684602277738-9208">Собеседование</a>
-          {% elif user_application.status == "second" %}
-          <div style="margin-left: 213px; margin-top: 20px;">
-            <p>Собеседование состоится {{datetime}}</p>
-              <p>Ссылка на собеседование:</p>
-              <a href="{{link}}">{{link}}</a>
+          <div style="margin-left: 200px; margin-top: 20px;"></div>
+            <h1>Ваша заявка отправлена, ожидайте ответа HR</h1>
           </div>
+          {% elif user_application.status == "second" %}
+            <div style="margin-left: 213px; margin-top: 20px;">
+              <p>Собеседование состоится {{datetime}}</p>
+                <p>Ссылка на собеседование:</p>
+                <a href="{{link}}">{{link}}</a>
+            </div>
           {% elif user_application.status == "third" %}
               <p>Третий</p>
           {% else %}

@@ -237,7 +237,6 @@ def hr_userPage(request, userId):
         status = user_application.first().status
     # personal_info_len = len(Personal_Info.objects.filter(user_id=userId))
     form = None
-    CheckListFormSet = formset_factory(CheckListForm, extra=1)
     if request.method == 'POST':
         if user_application.first().status == "first":
             form = InterviewLinkForm(request.POST)
@@ -275,16 +274,22 @@ HR готов провести собеседование.
                 application.save()
                 return redirect(request.path)
         elif user_application.first().status == "third":
+                # CheckListFormSet = formset_factory(CheckListForm, extra=1)
                 formset = CheckListFormSet(request.POST, prefix='checklist')
-                print("**********************************", formset)
+                print("***********************", formset)
                 if formset.is_valid():
-                    print("**********************************")
                     for form in formset:
                         if form.has_changed():
-                            form.cleaned_data['status'] = False  # Установка значения status
-                            form.fields['status'].widget = forms.HiddenInput()
                             check_list = form.save(commit=False)
                             check_list.application = user_application.first()
+
+                            # Проверяем наличие поля 'name' в cleaned_data
+                            if 'name' in form.cleaned_data:
+                                check_list.name = form.cleaned_data['name']
+                            else:
+                                check_list.name = 'лол'  # Установите значение по умолчанию или игнорируйте поле
+
+                            check_list.status = False
                             check_list.save()
                     return redirect(request.path)
         elif user_application.first().status == "third":
@@ -307,11 +312,24 @@ HR готов провести собеседование.
             "user_application": user_application.first(),
             "status" : status,
             "form": form,
-            'formset': formset,
+            "formset": formset,
+            # "formset": formset if user_application.first().status == "third" else None,
         }
     )
     # return HttpResponse(f"Заявка на релокацию номер {appid}")
 
+def hr_userProfile(request, userId):
+    personal_info = Personal_Info.objects.filter(user_id=userId)
+    print("**********", personal_info)
+    return render(
+        request, 
+        "main/hr/userProfile.html", 
+        {
+            "userId": userId,
+            "personal_info": personal_info,
+        }
+    )
+    # return HttpResponse(f"Заявка на релокацию номер {appid}")
 
 def hrNews(request):
     new_username = Personal_Info.objects.filter(user_id=request.user.id)
