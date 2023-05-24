@@ -87,7 +87,7 @@ class Documents(models.Model):
     application = models.ForeignKey("Application", on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.title
+        return f"{self.title} {self.file} "
 
 
 class Check_list(models.Model):
@@ -96,7 +96,7 @@ class Check_list(models.Model):
     application = models.ForeignKey("Application", on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.name
+        return f"Interview ({self.id}, {self.name}, {self.status})"
 
 
 class Interview(models.Model):
@@ -110,9 +110,18 @@ class Interview(models.Model):
 
 
 class Review(models.Model):
+    RATING_CHOICES = (
+        ('1', '★'),  
+        ('2', '★ ★'),   
+        ('3', '★ ★ ★'),  
+        ('4', '★ ★ ★ ★'),  
+        ('5', '★ ★ ★ ★ ★'),  
+    )
+
     review = models.TextField()
-    rating = models.IntegerField()
+    rating = models.CharField(max_length=5, choices=RATING_CHOICES)
+    created_at = models.DateTimeField(default=timezone.now)
     application = models.ForeignKey("Application", on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"Review (id: {self.id}, rating: {self.rating})"
+        return f"Review (id: {self.id}, rating: {self.rating}, {self.review}, {self.created_at})"

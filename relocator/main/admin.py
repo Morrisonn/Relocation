@@ -5,6 +5,7 @@ from django import forms
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import UserCreationForm
 from django.utils.translation import gettext_lazy as _
+from .models import ChartData
 
 admin.site.site_header = "АДМИНИСТРАТОР"
 
@@ -27,6 +28,12 @@ class NewsAdmin(admin.ModelAdmin):
     search_fields = ('title',)  # Добавляем поля для поиска
     list_filter = ('created_at',)
 
+class ChartDataAdmin(admin.ModelAdmin):
+    list_display = ('label', 'value')
+    list_filter = ('label',)
+    search_fields = ('label',)
+
+admin.site.register(ChartData, ChartDataAdmin)
 # admin.site.register(User, LocationUser)
 admin.site.register(News, NewsAdmin)
 admin.site.register(Location, LocationAdmin)

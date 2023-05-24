@@ -33,3 +33,16 @@
     #real-estates-detail .slides li img {
      height: 450px;
     }
+
+    .star {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        background-image: url('C:\work\Relocation\relocator\media\stars\star-icon.png'); /* Замените на путь к изображению звезды */
+        background-size: cover;
+        cursor: pointer;
+    }
+    
+    .star.selected {
+        background-image: url('C:\work\Relocation\relocator\media\stars\star-icon.png'); /* Замените на путь к изображению выбранной звезды */
+    }

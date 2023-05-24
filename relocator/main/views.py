@@ -49,6 +49,16 @@ def begin(request):
 def autorisation(request):
     return render(request, "main/autorization.html")
 
+def userReviews(request):
+    reviews = Review.objects.all()
+    return render(
+        request,
+        "main/user/reviews.html",
+        {
+            "reviews": reviews,
+        },
+    )
+
 def userAccount(request):
     new_username = Personal_Info.objects.filter(user_id=request.user.id)
     new_username_len = len(new_username)
@@ -77,16 +87,35 @@ def userApplication(request):
     interview = Interview.objects.filter(application_id = user_application.first().id)
     link = interview.first().link
     datetime = interview.first().datetime
+    check_list = Check_list.objects.filter(application_id = user_application.first().id)
+    rating = Review.objects.filter(application_id = user_application.first().id)
+    print("==>", check_list)
+    if request.method == 'POST':
+        all_checklist = Check_list.objects.filter(application_id=user_application.first().id)
+        selected_checklist = request.POST.getlist('checklist')
+        for checklist in all_checklist:
+            if str(checklist.id) in selected_checklist:
+                checklist.status = True
+            else:
+                checklist.status = False
+            checklist.save()
+        for file in request.FILES.getlist('doc_input'):
+            document = Documents()
+            document.title = file.name
+            document.file = file
+            document.application = user_application.first()
+            document.save()
 
-    # print("==>", user_application)
-    # print("==>", user_application_len)
-    # print("==>", locations)
+        review_form = ReviewForm(request.POST)
+        if review_form.is_valid():
+            review = review_form.save(commit=False)
+            review.application = user_application.first()
+            review.save()
 
-    # print(f"smh {request} {request.POST}")
-    # selected_location_id = int(request.POST.get('selected_location'))
-    # print('---->', selected_location_id, type(selected_location_id))
-    # selected_location = Location.objects.get(id=selected_location_id)
-
+        return redirect(request.path)
+    else:
+        review_form = ReviewForm()
+    
     context = {
         "YANDEX_MAPS_API_KEY": settings.YANDEX_MAPS_API_KEY,
     }
@@ -102,6 +131,9 @@ def userApplication(request):
             "status": status,
             "link" : link,
             "datetime" : datetime,
+            "check_list" : check_list,
+            "review_form": review_form,
+            "rating" : rating,
         },
     )
 
@@ -232,6 +264,7 @@ def hr_userPage(request, userId):
     user_application = Application.objects.filter(user_id=userId)
     user_application_len = len(user_application)
     notes = Interview.objects.filter(application_id = user_application.first().id)
+    documents = Documents.objects.filter(application_id = user_application.first().id)
     if user_application_len == 0:
         status = None
     else:
@@ -240,7 +273,12 @@ def hr_userPage(request, userId):
     form = None
     formset = None
     if request.method == 'POST':
-        if user_application.first().status == "first":
+        if 'btn-fourth' in request.POST:
+            application = user_application.first()
+            application.status = "fourth"
+            application.save()
+            return redirect(request.path)
+        elif user_application.first().status == "first":
             form = InterviewLinkForm(request.POST)
             if form.is_valid():
                 link = form.cleaned_data['link']
@@ -309,8 +347,9 @@ HR готов провести собеседование.
             "user_application": user_application.first(),
             "status" : status,
             "notes" : notes,
-            "form": form,
-            "formset": formset,
+            "form" : form,
+            "formset" : formset,
+            "documents" : documents,
             # "formset": formset if user_application.first().status == "third" else None,
         }
     )

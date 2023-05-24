@@ -25,6 +25,7 @@
 			<li><a href="{% url 'userApplication' %}">Заявка</a></li>
             <li><a href="{% url 'userRelocatedEmployees' %}">Релоцированные сотрудники</a></li>
 			<li><a href="{% url 'userNews' %}">Новости</a></li>
+			<li><a href="{% url 'userReviews' %}">Отзывы о сервисе</a></li>
 			<li class="last"><a href="{% url 'logout_view' %}">Выход</a></li>
 			{% if user.is_authenticated %}
 				{% if new_username_len == 0 %}
@@ -55,6 +56,9 @@
 	{% endblock %}
 
 	{% block account %}
+	{% endblock %}
+
+	{% block reviews %}
 	{% endblock %}
 </div>
 

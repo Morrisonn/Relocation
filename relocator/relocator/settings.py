@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "main.apps.MainConfig",
     "bootstrap4",
     "django_filters",
+    'star_ratings',
 ]
 
 MIDDLEWARE = [
@@ -136,7 +137,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "main.User"
 YANDEX_MAPS_API_KEY = "ваш API-ключ"
 
-LOGOUT_REDIRECT_URL = 'http://127.0.0.1:8000/autorization/login/Й'
+LOGOUT_REDIRECT_URL = 'http://127.0.0.1:8000/autorization/login/'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'  # SMTP-сервер, например, smtp.gmail.com

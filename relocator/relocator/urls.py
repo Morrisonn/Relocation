@@ -15,6 +15,7 @@ urlpatterns = [
     path("autorization/", include("main.urls")),
     path("autorization/logout", logout_view, name="logout_view"),
     path("user/", user, name="user"),
+    path("user/reviews/", userReviews, name="userReviews"),
     path("user/application/", userApplication, name="userApplication"),
     path("user/application/new", newUserApplication, name="newUserApplication"),
     path("user/profile/", userProfile, name="userProfile"),

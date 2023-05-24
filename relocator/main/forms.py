@@ -6,7 +6,7 @@ class AddProfileForm(forms.Form):
     first_name = forms.CharField(max_length=50, label="Имя")
     last_name = forms.CharField(max_length=50, label="Фамилия")
     middle_name = forms.CharField(max_length=50, label="Отчество")
-    photo = forms.ImageField(required=False, label="Фото")
+    # photo = forms.ImageField(required=False, label="Фото")
     gender = forms.ChoiceField(
         choices=[("male", "Мужской"), ("female", "Женский")],
         required=False,
@@ -51,4 +51,13 @@ class CheckListForm(forms.ModelForm):
             'name': '',
         }
         label_suffix = 'л'
+
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = ['review', 'rating']
+        labels = {
+            'review': '',
+            'rating': '',
+        }
 # class CreateApplication(forms.Form):

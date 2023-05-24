@@ -151,8 +151,9 @@
 		  </div>
 		</div>
     <p>1. Ваша заявка отправлена, ожидайте ответа HR</p>
-    <p>2. Заявка отправлена</p>
-    <p>3. Заявка отправлена</p>
+    <p>2. Назначено собеседование</p>
+    <p>3. Собеседование пройдено. Отправьте необходимые документы</p>
+    <p>4. Релокация завершена</p>
 	  </div>
 
     <script>
@@ -173,7 +174,7 @@
 			progressBar.setAttribute("aria-valuenow", "75");
 			document.querySelector("#pills-step3-tab").classList.add("active");
 		}
-    else if (status == "fourt") {
+    else if (status == "fourth") {
 			progressBar.style.width = "100%";
 			progressBar.setAttribute("aria-valuenow", "100");
 			document.querySelector("#pills-step4-tab").classList.add("active");
@@ -192,7 +193,82 @@
                 <a href="{{link}}">{{link}}</a>
             </div>
           {% elif user_application.status == "third" %}
-              <p>Третий</p>
+            <div style="margin-top: px; margin-left: 0px;">
+              <div class="container">
+                <div class="row">
+                  <div class="col-md-12">
+                    <h4 style="margin-bottom: 5px; margin-top: 30px;">Список необходимых документов:</h4>
+                    <div class="card" style="width: 112 0px; height: 350px;">
+                      <div class="card-body">
+                        <form method="post" action="{% url 'userApplication' %}" enctype="multipart/form-data">
+                          {% csrf_token %}
+                          {% for obj in check_list %}
+                            <div style="display: flex; align-items: center;">
+                              <label style="margin-bottom: 15px; width: 800px;">
+                                <input type="checkbox" name="checklist" value="{{ obj.id }}" {% if obj.status %}checked{% endif %} {% if obj.disabled %}disabled{% endif %} onchange="toggleInput(event, this)">
+                                {{ obj.name }}
+                              </label>
+                              <input class="file-input" type="file" name="doc_input" {% if obj.status %}style="margin-left: 10px; flex-shrink: 0;"{% else %}style="display: none;"{% endif %}>                            
+                            </div>  
+                          {% endfor %}
+                          <button style="position: absolute; top:360px; left: 0px;" type="button" class="btn btn-primary" onclick="submitForm()">Сохранить</button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <script>
+              window.addEventListener('DOMContentLoaded', (event) => {
+                var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+                checkboxes.forEach(function(checkbox) {
+                  toggleInput(null, checkbox);
+                });
+              });
+            
+              function toggleInput(event, checkbox) {
+                var input = checkbox.parentNode.nextElementSibling;
+                if (checkbox.checked) {
+                  input.style.display = "none";
+                } else {
+                  input.style.display = "block";
+                }
+              }
+              
+              function submitForm() {
+                var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+                checkboxes.forEach(function(checkbox) {
+                  toggleInput(null, checkbox);
+                });
+                document.forms[0].submit();
+              }
+            </script>
+            
+          {% elif user_application.status == "fourth" %}  
+            {% if rating %}
+              <p style="margin-left: 213px; margin-top: 30px;">Поздравляем, ваша релокация завершена</p>
+            {% else %}
+              <style>
+                textarea{
+                  width: 215px;
+                }
+                select{
+                  margin-top: 10px;
+                  margin-bottom: 10px;
+                  width: 152px;
+                }
+              </style>
+              <div style="margin-left: 212px; margin-top: 20px;">
+                <p style="margin-bottom: 6px;">Пожалуйста, добавьте отзыв</p>
+                <form method="post">
+                  {% csrf_token %}
+                  {{ review_form.as_p }}
+                  <button style="width: 215px;" class="btn btn-primary" type="submit">Отправить</button>
+                </form> 
+              </div>
+            {% endif %}         
           {% else %}
               <p>Статус неизвестен</p>
           {% endif %}
